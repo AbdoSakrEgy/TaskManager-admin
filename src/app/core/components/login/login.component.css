@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btnLoginValid {
+    @apply w-52 py-1 text-center rounded-md bg-green-600 text-white;
+  }
+  .btnLoginInValid {
+    @apply w-52 py-1 text-center rounded-md bg-[#e0e0e0] text-[#b1b0b2];
+  }
+}

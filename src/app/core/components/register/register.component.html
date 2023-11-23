@@ -1,0 +1,82 @@
+<main class="flex justify-between items-center">
+  <div class="w-1/2 h-screen bg-black">
+    <img
+      src="../../../../assets/images/img.jpg"
+      alt="img"
+      class="h-screen object-cover opacity-25"
+    />
+  </div>
+  <div class="w-1/2 h-screen flex justify-center items-center">
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onRegister()"
+      class="flex flex-col justify-center w-3/4 rounded-lg px-5 py-10 shadow-2xl"
+    >
+      <span class="text-xl text-[#bd3630] pb-5">Register</span>
+      <!-- user name -->
+      <mat-form-field class="example-full-width">
+        <mat-label>User name</mat-label>
+        <input matInput type="text" formControlName="userName" />
+        <mat-error *ngIf="registerForm.get('userName')?.hasError('required')">
+          User name is required
+        </mat-error>
+        <mat-error
+          *ngIf="registerForm.get('userName')?.hasError('lengthInvalid')"
+        >
+          User name should be more than 4 characters and less than 10 characters
+        </mat-error>
+      </mat-form-field>
+      <!-- email -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
+          Incorrect email
+        </mat-error>
+      </mat-form-field>
+      <!-- password -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+          Password is required
+        </mat-error>
+        <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
+          Password should be more than 3 characters
+        </mat-error>
+        <mat-error *ngIf="registerForm.get('password')?.hasError('maxlength')">
+          Password should be less than 11 characters
+        </mat-error>
+      </mat-form-field>
+      <!-- confirm password -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Confirm password</mat-label>
+        <input matInput type="password" formControlName="confirmPassword" />
+        <mat-error *ngIf="registerForm.hasError('passwordMismatch')">
+          Passwords do not match
+        </mat-error>
+      </mat-form-field>
+      <!--  -->
+      <span class="flex justify-center">
+        <button
+          type="submit"
+          [class]="{
+            btnRegisterValid: registerForm.valid,
+            btnRegisterInValid: registerForm.invalid
+          }"
+          [disabled]="registerForm.invalid"
+        >
+          Create account
+        </button>
+      </span>
+      <span class="flex justify-center">
+        <p class="text-[#4050b8] text-center hover:cursor-pointer">
+          <a routerLink="/login">Have an account?</a>
+        </p>
+      </span>
+    </form>
+  </div>
+</main>
