@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .table-container {
+    @apply overflow-auto shadow-lg;
+  }
+  .row-style {
+    @apply flex justify-between items-center gap-3 px-5 py-2 border-b;
+  }
+  .btn-update {
+    @apply px-3 py-2 rounded-md hover:cursor-pointer bg-[#f7d034] text-white;
+  }
+  .btn-delete {
+    @apply px-3 py-2 rounded-md hover:cursor-pointer bg-[#bd3630] text-white;
+  }
+}

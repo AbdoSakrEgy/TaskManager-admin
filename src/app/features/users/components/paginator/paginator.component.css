@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btnPaginationActive {
+    @apply w-7 h-7 rounded-md bg-[#cb075a] text-white;
+  }
+  .btnPagination {
+    @apply w-7 h-7 rounded-md bg-[#e0e0e0] text-white;
+  }
+}

@@ -1,1 +1,32 @@
-<p>users works!</p>
+<main class="px-[20%] mt-5">
+  <mat-form-field>
+    <mat-label>search</mat-label>
+    <input matInput />
+  </mat-form-field>
+  <!-- table -->
+  <div class="table-container">
+    <div
+      class="flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white"
+    >
+      <span class="w-[10%]">No.</span>
+      <span class="w-[20%]">Name</span>
+      <span class="w-[20%]">Email</span>
+      <span class="w-[20%]">Assigned Tasks</span>
+      <span class="w-[10%]">Status</span>
+      <span class="w-[20%]"></span>
+    </div>
+    <div class="row-style" *ngFor="let user of users">
+      <span class="w-[10%]">{{ user.position }}</span>
+      <span class="w-[20%]">{{ user.name }}</span>
+      <span class="w-[20%]">{{ user.email }}</span>
+      <span class="w-[20%]">{{ user.task }}</span>
+      <span class="w-[10%]">{{ user.status }}</span>
+      <span class="w-[20%] flex gap-3">
+        <span class="btn-update">Update</span>
+        <span class="btn-delete">Delete</span>
+      </span>
+    </div>
+  </div>
+  <!-- paginator of table -->
+  <app-paginator (usersDataForParent)="changeUsersData($event)"></app-paginator>
+</main>

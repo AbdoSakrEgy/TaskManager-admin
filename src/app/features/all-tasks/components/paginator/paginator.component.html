@@ -1,0 +1,26 @@
+<main class="flex justify-center items-start gap-3 mt-5">
+  <mat-icon
+    aria-hidden="false"
+    aria-label="Example home icon"
+    fontIcon="keyboard_double_arrow_left"
+    class="flex justify-center items-center text-sm text-[#b1b0b2] hover:cursor-pointer"
+    (click)="previousPage()"
+  ></mat-icon>
+  <button
+    [class]="{
+      btnPaginationActive: page === activePageNumber,
+      btnPagination: page != activePageNumber
+    }"
+    *ngFor="let page of pageNumbers"
+    (click)="changePage(page)"
+  >
+    {{ page }}
+  </button>
+  <mat-icon
+    aria-hidden="false"
+    aria-label="Example home icon"
+    fontIcon="keyboard_double_arrow_right"
+    class="flex justify-center items-center text-sm text-[#b1b0b2] hover:cursor-pointer"
+    (click)="nextPage()"
+  ></mat-icon>
+</main>

@@ -3,5 +3,32 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* 
+Main colors code:-
+
+#cb075a => pink
+#930345 => dark pink
+
+#f7d034 => yellow
+
+#930345 => red
+#bd3630 => dark red
+
+#4050b8 => blue
+
+#e0e0e0 => gray
+#b1b0b2 => dark gray
+
+#f64236 => orange
+
+#16a34a => green
+*/

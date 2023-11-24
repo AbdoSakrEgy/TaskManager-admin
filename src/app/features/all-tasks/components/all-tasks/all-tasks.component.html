@@ -1,1 +1,78 @@
-<p>all-tasks works!</p>
+<main class="px-[20%]">
+  <div class="flex justify-end mt-5">
+    <span
+      class="text-xl font-medium bg-[#cb075a] text-white px-5 py-2 rounded-md hover:cursor-pointer"
+      (click)="openDialog()"
+    >
+      Add Task
+    </span>
+  </div>
+  <div class="flex justify-between items-center gap-3 flex-wrap mt-5">
+    <!-- search -->
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input matInput />
+    </mat-form-field>
+    <!-- by user -->
+    <mat-form-field>
+      <mat-label>By user</mat-label>
+      <mat-select>
+        <mat-option value="one">First option</mat-option>
+        <mat-option value="two">Second option</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- status -->
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select>
+        <mat-option value="one">First option</mat-option>
+        <mat-option value="two">Second option</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- date range -->
+    <mat-form-field>
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Start date" />
+        <input matEndDate placeholder="End date" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+  <!-- table -->
+  <div class="table-container">
+    <div
+      class="flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white"
+    >
+      <span class="w-[5%]">No.</span>
+      <span class="w-[10%]">Image</span>
+      <span class="w-[20%]">Title</span>
+      <span class="w-[20%]">User</span>
+      <span class="w-[15%]">DeadLine date</span>
+      <span class="w-[10%]">Status</span>
+      <span class="w-[20%]"></span>
+    </div>
+    <div class="row-style" *ngFor="let user of users">
+      <span class="w-[5%]">{{ user.position }}</span>
+      <span class="w-[10%]">
+        <img [src]="user.img" alt="img" />
+      </span>
+      <span class="w-[20%]">{{ user.title }}</span>
+      <span class="w-[20%]">{{ user.user }}</span>
+      <span class="w-[15%]">{{ user.deadLine }}</span>
+      <span class="w-[10%]">{{ user.status }}</span>
+      <span class="w-[20%] flex gap-3">
+        <span class="btn-update">Update</span>
+        <span class="btn-delete">Delete</span>
+      </span>
+    </div>
+  </div>
+  <!-- paginator of table -->
+  <app-paginator
+    (usersDataForParent)="changeUsersData($event)"
+  ></app-paginator>
+</main>

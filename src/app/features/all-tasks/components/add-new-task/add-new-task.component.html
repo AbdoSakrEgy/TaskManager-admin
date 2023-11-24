@@ -1,1 +1,54 @@
-<p>add-new-task works!</p>
+<main class="flex flex-col gap-5 p-5">
+  <!-- header -->
+  <div class="flex justify-between items-center">
+    <span class="text-3xl font-bold">Add new task</span>
+    <div class="example-button-container">
+      <button
+        mat-mini-fab
+        color="primary"
+        aria-label="Example icon button with a menu icon"
+        (click)="onNoClick()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <!-- body -->
+  <div class="flex flex-col">
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>User</mat-label>
+      <input matInput />
+    </mat-form-field>
+
+    <input type="file" style="margin-bottom: 20px" />
+
+    <mat-form-field>
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Textarea</mat-label>
+      <textarea matInput></textarea>
+    </mat-form-field>
+  </div>
+  <!-- footer -->
+  <div class="flex justify-center gap-3">
+    <button
+      [class]="{ 'btn-create-active': true, 'btn-create-inactive': false }"
+    >
+      Create
+    </button>
+    <button class="btn-close" (click)="onNoClick()">Close</button>
+  </div>
+</main>
