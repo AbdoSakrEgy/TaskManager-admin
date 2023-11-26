@@ -65,11 +65,13 @@
           type="submit"
           [class]="{
             btnRegisterValid: registerForm.valid,
-            btnRegisterInValid: registerForm.invalid
+            btnRegisterInValid: registerForm.invalid,
+            btnLoading: isLoading
           }"
-          [disabled]="registerForm.invalid"
+          [disabled]="registerForm.invalid || isLoading"
         >
-          Create account
+          <span *ngIf="!isLoading">Create account</span>
+          <span *ngIf="isLoading">Loading...</span>
         </button>
       </span>
       <span class="flex justify-center">

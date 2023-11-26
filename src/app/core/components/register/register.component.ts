@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginRegisterService } from '../../services/login-register.service';
 
 @Component({
   selector: 'app-register',
@@ -29,12 +25,35 @@ export class RegisterComponent {
     },
     { validator: passwordMatchValidator() }
   );
+  isLoading = false;
+  errorMessage = '';
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private loginRegisterService: LoginRegisterService
+  ) {}
   onRegister() {
-    this.router.navigateByUrl('/all-tasks');
+    this.isLoading = true;
+    this.errorMessage = '';
+    const MODEL = {
+      email: this.registerForm.get('email')?.value!,
+      password: this.registerForm.get('password')?.value!,
+      username: this.registerForm.get('userName')?.value!,
+      role: 'user',
+    };
+    this.loginRegisterService.register(MODEL).subscribe({
+      next: (res) => {
+        this.router.navigateByUrl('/all-tasks');
+      },
+      error: (error) => {
+        this.errorMessage = error;
+        this.isLoading = false;
+      },
+    });
   }
 }
+
 // custom validators
 export function isUserNameLengthValid() {
   return (control: AbstractControl) => {

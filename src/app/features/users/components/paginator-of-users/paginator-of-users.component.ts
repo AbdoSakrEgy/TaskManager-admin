@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-paginator',
-  templateUrl: './paginator.component.html',
-  styleUrls: ['./paginator.component.css'],
+  selector: 'app-paginator-of-users',
+  templateUrl: './paginator-of-users.component.html',
+  styleUrls: ['./paginator-of-users.component.css'],
 })
-export class PaginatorComponent {
-  usersDataList = usersDataList;
+export class PaginatorOfUsersComponent {
+  usersDataList = usersData;
   usersData: any[] = [];
   usersDataPerPage: number = 4;
   public selectedPage = 1;
@@ -57,85 +57,75 @@ export class PaginatorComponent {
 }
 
 // =========================
-const usersDataList = [
+const usersData = [
   {
     position: 1,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'ali',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
   {
     position: 2,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'ali',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
   {
     position: 3,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'ali',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
   {
     position: 4,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'ali',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
   {
     position: 5,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'mohamed',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
   {
     position: 6,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'ali',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
   {
     position: 7,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'ali',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
   {
     position: 8,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'ali',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
   {
     position: 9,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'ali',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
   {
     position: 10,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
+    name: 'ali',
+    email: 'ali@gmail.com',
+    task: 'ebbda project',
     status: 'pending',
   },
 ];

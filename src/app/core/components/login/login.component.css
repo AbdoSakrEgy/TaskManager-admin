@@ -9,4 +9,7 @@
   .btnLoginInValid {
     @apply w-52 py-1 text-center rounded-md bg-[#e0e0e0] text-[#b1b0b2];
   }
+  .btnLoading {
+    @apply w-52 py-1 text-center rounded-md bg-[#e0e0e0] text-[#b1b0b2];
+  }
 }

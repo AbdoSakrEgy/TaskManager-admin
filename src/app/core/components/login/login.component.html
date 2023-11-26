@@ -63,17 +63,24 @@
           Password should be less than 11 characters
         </mat-error>
       </mat-form-field>
-      <!--  -->
+
+      <mat-checkbox class="example-margin" (change)="isAdmin = !isAdmin">
+        Login as admin
+      </mat-checkbox>
+      <span class="text-center py-3 text-red-500">{{ errorMessage }}</span>
+      <!-- submit -->
       <span class="flex justify-center">
         <button
           type="submit"
           [class]="{
-            btnLoginValid: loginForm.valid,
-            btnLoginInValid: loginForm.invalid
+            btnLoginValid: loginForm.valid && !isLoading,
+            btnLoginInValid: loginForm.invalid,
+            btnLoading: isLoading
           }"
-          [disabled]="loginForm.invalid"
+          [disabled]="loginForm.invalid || isLoading"
         >
-          Login
+          <span *ngIf="!isLoading">Login</span>
+          <span *ngIf="isLoading">Loading...</span>
         </button>
       </span>
       <span class="flex justify-center">

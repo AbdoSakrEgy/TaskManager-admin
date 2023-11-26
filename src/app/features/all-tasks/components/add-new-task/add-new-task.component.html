@@ -9,7 +9,7 @@
         aria-label="Example icon button with a menu icon"
         (click)="onNoClick()"
       >
-        <mat-icon>close</mat-icon>
+        <mat-icon style="color: #bd3630">close</mat-icon>
       </button>
     </div>
   </div>
@@ -39,13 +39,13 @@
 
     <mat-form-field>
       <mat-label>Textarea</mat-label>
-      <textarea matInput></textarea>
+      <textarea matInput style="height: 200px"></textarea>
     </mat-form-field>
   </div>
   <!-- footer -->
   <div class="flex justify-center gap-3">
     <button
-      [class]="{ 'btn-create-active': true, 'btn-create-inactive': false }"
+      [class]="{ 'btn-create-active': false, 'btn-create-inactive': true }"
     >
       Create
     </button>
