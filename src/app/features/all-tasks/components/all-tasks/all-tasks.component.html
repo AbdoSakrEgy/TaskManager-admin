@@ -45,6 +45,7 @@
   </div>
   <!-- table -->
   <div class="table-container">
+    <!-- if data retrived -->
     <div
       class="flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white"
     >
@@ -71,8 +72,20 @@
       </span>
     </div>
   </div>
+  <!-- if loading -->
+  <div class="text-center py-3" *ngIf="isLoading">
+    <app-spinner1></app-spinner1>
+  </div>
+  <!-- if no data -->
+  <div
+    class="text-center py-3 text-[#b1b0b2]"
+    *ngIf="!isLoading && users.length === 0"
+  >
+    No data
+  </div>
   <!-- paginator of table -->
   <app-paginator-of-all-tasks
     (usersDataForParent)="changeUsersData($event)"
+    (isLoading)="isLoading = $event"
   ></app-paginator-of-all-tasks>
 </main>

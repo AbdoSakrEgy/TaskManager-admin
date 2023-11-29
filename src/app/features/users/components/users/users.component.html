@@ -5,6 +5,7 @@
   </mat-form-field>
   <!-- table -->
   <div class="table-container">
+    <!-- if data retrived -->
     <div
       class="flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white"
     >
@@ -15,20 +16,32 @@
       <span class="w-[10%]">Status</span>
       <span class="w-[20%]"></span>
     </div>
-    <div class="row-style" *ngFor="let user of users">
-      <span class="w-[10%]">{{ user.position }}</span>
-      <span class="w-[20%]">{{ user.name }}</span>
+    <div class="row-style" *ngFor="let user of users; let index = index">
+      <span class="w-[10%]">{{ index + 1 }}</span>
+      <span class="w-[20%]">{{ user.username }}</span>
       <span class="w-[20%]">{{ user.email }}</span>
-      <span class="w-[20%]">{{ user.task }}</span>
+      <span class="w-[20%]">{{ user.assignedTasks }}</span>
       <span class="w-[10%]">{{ user.status }}</span>
       <span class="w-[20%] flex gap-3">
         <span class="btn-update">Update</span>
         <span class="btn-delete">Delete</span>
       </span>
     </div>
+    <!-- if loading -->
+    <div class="text-center py-3" *ngIf="isLoading">
+      <app-spinner1></app-spinner1>
+    </div>
+    <!-- if no data -->
+    <div
+      class="text-center py-3 text-[#b1b0b2]"
+      *ngIf="!isLoading && users.length === 0"
+    >
+      No data
+    </div>
   </div>
   <!-- paginator of table -->
   <app-paginator-of-users
     (usersDataForParent)="changeUsersData($event)"
+    (isLoadin)="isLoading = $event"
   ></app-paginator-of-users>
 </main>

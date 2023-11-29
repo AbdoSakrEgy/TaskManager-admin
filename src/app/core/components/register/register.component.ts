@@ -1,7 +1,15 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginRegisterService } from '../../services/login-register.service';
+import { AuthService } from '../../services/auth.service';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +19,10 @@ import { LoginRegisterService } from '../../services/login-register.service';
 export class RegisterComponent {
   public registerForm = this.formBuilder.group(
     {
-      userName: ['', [Validators.required, isUserNameLengthValid()]],
+      userName: [
+        '',
+        [Validators.required, Validators.minLength(4), Validators.maxLength(4)],
+      ],
       email: ['', [Validators.required, Validators.email]],
       password: [
         '',
@@ -23,15 +34,18 @@ export class RegisterComponent {
       ],
       confirmPassword: ['', [Validators.required]],
     },
-    { validator: passwordMatchValidator() }
+    { validator: this.checkIfMatchingPasswords('password', 'confirmPassword') }
   );
-  isLoading = false;
+  isSuccessful = false;
+  isSignUpFailed = false;
   errorMessage = '';
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private loginRegisterService: LoginRegisterService
+    private authService: AuthService,
+    private tokenStorage: TokenStorageService
   ) {}
   onRegister() {
     this.isLoading = true;
@@ -42,34 +56,35 @@ export class RegisterComponent {
       username: this.registerForm.get('userName')?.value!,
       role: 'user',
     };
-    this.loginRegisterService.register(MODEL).subscribe({
-      next: (res) => {
+    this.authService.register(MODEL).subscribe({
+      next: (res: any) => {
+        console.log(res);
         this.router.navigateByUrl('/all-tasks');
+        this.tokenStorage.saveToken(res.token);
+        this.isSuccessful = true;
+        this.isSignUpFailed = false;
       },
       error: (error) => {
         this.errorMessage = error;
+        this.isSignUpFailed = true;
         this.isLoading = false;
       },
     });
   }
-}
-
-// custom validators
-export function isUserNameLengthValid() {
-  return (control: AbstractControl) => {
-    if (control.value.length < 4 || control.value.length > 10) {
-      return { lengthInvalid: true };
-    }
-    return null;
-  };
-}
-export function passwordMatchValidator() {
-  return (control: AbstractControl) => {
-    if (
-      control.get('password')?.value != control.get('confirmPassword')?.value
-    ) {
-      return { passwordMismatch: true };
-    }
-    return null;
-  };
+  // ---------------custom validator
+  checkIfMatchingPasswords(
+    passwordKey: string,
+    passwordConfirmationKey: string
+  ) {
+    return (group: FormGroup) => {
+      let passwordInput = group.controls[passwordKey],
+        passwordConfirmationInput = group.controls[passwordConfirmationKey];
+      if (passwordInput.value !== passwordConfirmationInput.value) {
+        return passwordConfirmationInput.setErrors({ notEquivalent: true });
+      } else {
+        return passwordConfirmationInput.setErrors(null);
+      }
+    };
+  }
+  // custom validator---------------
 }

@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class UsersComponent {
   users: any = [];
+  isLoading = true;
 
   changeUsersData(event: any) {
     while (this.users.length > 0) {

@@ -9,7 +9,8 @@ import { AddNewTaskComponent } from '../add-new-task/add-new-task.component';
 })
 export class AllTasksComponent {
   users: any = [];
-
+  isLoading = true;
+  
   constructor(public dialog: MatDialog) {}
   changeUsersData(event: any) {
     while (this.users.length > 0) {

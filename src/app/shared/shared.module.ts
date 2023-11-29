@@ -6,9 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
+import { Spinner1Component } from './components/spinner1/spinner1.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [Spinner1Component],
   imports: [
     CommonModule,
     MaterialuiModule,
@@ -25,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatInputModule,
     MatFormFieldModule,
     HttpClientModule,
+    Spinner1Component,
   ],
 })
 export class SharedModule {}

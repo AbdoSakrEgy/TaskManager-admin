@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
   selector: 'app-paginator-of-users',
@@ -7,17 +8,31 @@ import { Output, EventEmitter } from '@angular/core';
   styleUrls: ['./paginator-of-users.component.css'],
 })
 export class PaginatorOfUsersComponent {
-  usersDataList = usersData;
+  usersDataList: any[] = [];
   usersData: any[] = [];
   usersDataPerPage: number = 4;
   public selectedPage = 1;
   activePageNumber = 1;
   @Output() usersDataForParent = new EventEmitter<any>();
+  @Output() isLoadin = new EventEmitter<boolean>(true);
 
+  constructor(private dataService: DataService) {}
   ngOnInit(): void {
     let pageIndex = (this.selectedPage - 1) * this.usersDataPerPage;
     this.usersData = this.usersDataList.slice(pageIndex, this.usersDataPerPage);
     this.usersDataForParent.emit(this.usersData);
+    this.dataService.getAllUsers().subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.usersDataList = res.users;
+        this.slicedTasks();
+        this.isLoadin.emit(false);
+      },
+      error: (error) => {
+        console.log(error);
+        this.isLoadin.emit(false);
+      },
+    });
   }
   changePageSize(event: Event) {
     const newSize = (event.target as HTMLInputElement).value;
@@ -55,77 +70,3 @@ export class PaginatorOfUsersComponent {
     }
   }
 }
-
-// =========================
-const usersData = [
-  {
-    position: 1,
-    name: 'ali',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-  {
-    position: 2,
-    name: 'ali',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-  {
-    position: 3,
-    name: 'ali',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-  {
-    position: 4,
-    name: 'ali',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-  {
-    position: 5,
-    name: 'mohamed',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-  {
-    position: 6,
-    name: 'ali',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-  {
-    position: 7,
-    name: 'ali',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-  {
-    position: 8,
-    name: 'ali',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-  {
-    position: 9,
-    name: 'ali',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-  {
-    position: 10,
-    name: 'ali',
-    email: 'ali@gmail.com',
-    task: 'ebbda project',
-    status: 'pending',
-  },
-];

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
   selector: 'app-paginator-of-all-tasks',
@@ -7,14 +8,26 @@ import { Output, EventEmitter } from '@angular/core';
   styleUrls: ['./paginator-of-all-tasks.component.css'],
 })
 export class PaginatorOfAllTasksComponent {
-  usersDataList = usersDataList;
+  usersDataList = [];
   usersData: any[] = [];
   usersDataPerPage: number = 4;
   public selectedPage = 1;
   activePageNumber = 1;
   @Output() usersDataForParent = new EventEmitter<any>();
+  @Output() isLoading = new EventEmitter<boolean>(true);
 
+  constructor(private dataService: DataService) {}
   ngOnInit(): void {
+    this.dataService.getAllTasks().subscribe({
+      next: (res: any) => {
+        this.usersDataList = res.tasks;
+        this.isLoading.emit(false);
+      },
+      error: (error) => {
+        console.log(error);
+        this.isLoading.emit(false);
+      },
+    });
     let pageIndex = (this.selectedPage - 1) * this.usersDataPerPage;
     this.usersData = this.usersDataList.slice(pageIndex, this.usersDataPerPage);
     this.usersDataForParent.emit(this.usersData);

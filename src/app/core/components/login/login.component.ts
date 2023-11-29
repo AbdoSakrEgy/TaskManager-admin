@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginRegisterService } from '../../services/login-register.service';
+import { AuthService } from '../../services/auth.service';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: [
@@ -16,30 +17,40 @@ export class LoginComponent {
       [Validators.required, Validators.minLength(4), Validators.maxLength(10)],
     ],
   });
-  isAdmin = false;
-  isLoading = false;
+  isLogedIn = false;
+  isLoginFailed = false;
   errorMessage = '';
+  isLoading = false;
+  isAdmin = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private loginRegisterService: LoginRegisterService
+    private authService: AuthService,
+    private tokenStorageService: TokenStorageService
   ) {}
+  ngOnInit(): void {
+    if (this.tokenStorageService.getToken()) {
+      this.isLogedIn = true;
+    }
+  }
   onLogin() {
-    this.isLoading = true;
     this.errorMessage = '';
+    this.isLoading = true;
     const MODEL = {
       email: this.loginForm.get('email')?.value!,
       password: this.loginForm.get('password')?.value!,
       role: this.isAdmin ? 'admin' : 'user',
     };
-    this.loginRegisterService.login(MODEL).subscribe({
+    this.authService.login(MODEL).subscribe({
       next: (res: any) => {
         this.router.navigateByUrl('/all-tasks');
+        console.log(res);
+        this.tokenStorageService.saveToken(res.token);
       },
       error: (error) => {
-        this.isLoading = false;
         this.errorMessage = error;
+        this.isLoading = false;
       },
     });
   }
