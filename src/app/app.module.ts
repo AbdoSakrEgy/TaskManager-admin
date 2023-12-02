@@ -11,6 +11,7 @@ import { PageNotFoundComponent } from './core/components/page-not-found/page-not
 import { SharedModule } from './shared/shared.module';
 import { AllTasksModule } from './features/all-tasks/all-tasks.module';
 import { UsersModule } from './features/users/users.module';
+import { httpInterceptorProviders } from './core/interceptors';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { UsersModule } from './features/users/users.module';
     AllTasksModule,
     UsersModule,
   ],
-  providers: [],
+  providers: httpInterceptorProviders,
   bootstrap: [AppComponent],
 })
 export class AppModule {}

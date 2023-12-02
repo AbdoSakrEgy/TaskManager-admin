@@ -11,19 +11,11 @@ export class DataService {
   constructor(private http: HttpClient) {}
   getAllTasks() {
     const httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + localStorage.getItem(TOKEN_KEY)!,
-      }),
       params: new HttpParams().set('page', 1).set('limit', 1),
     };
     return this.http.get(API_URL + '/tasks/all-tasks', httpOptions);
   }
   getAllUsers() {
-    const httpsOptions = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + localStorage.getItem(TOKEN_KEY),
-      }),
-    };
-    return this.http.get(API_URL + '/auth/users', httpsOptions);
+    return this.http.get(API_URL + '/auth/users');
   }
 }

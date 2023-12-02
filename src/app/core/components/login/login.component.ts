@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit {
       [Validators.required, Validators.minLength(4), Validators.maxLength(10)],
     ],
   });
-  isLogedIn = false;
   isLoginFailed = false;
   errorMessage = '';
   isLoading = false;
@@ -31,7 +30,7 @@ export class LoginComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     if (this.tokenStorageService.getToken()) {
-      this.isLogedIn = true;
+      this.router.navigateByUrl('/all-tasks');
     }
   }
   onLogin() {
