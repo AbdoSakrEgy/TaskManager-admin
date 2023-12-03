@@ -9,9 +9,9 @@ const API_URL = 'https://crud-5swn.onrender.com';
 })
 export class DataService {
   constructor(private http: HttpClient) {}
-  getAllTasks() {
+  getAllTasks(page: number, limit: number) {
     const httpOptions = {
-      params: new HttpParams().set('page', 1).set('limit', 1),
+      params: new HttpParams().set('page', page).set('limit', limit),
     };
     return this.http.get(API_URL + '/tasks/all-tasks', httpOptions);
   }

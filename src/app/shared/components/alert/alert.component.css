@@ -1,0 +1,7 @@
+::ng-deep .mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  @apply p-0 rounded-md;
+}
+
+::ng-deep #cdk-overlay-0 {
+  @apply mt-14 !important;
+}

@@ -7,9 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { Spinner1Component } from './components/spinner1/spinner1.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
-  declarations: [Spinner1Component],
+  declarations: [Spinner1Component, AlertComponent],
   imports: [
     CommonModule,
     MaterialuiModule,

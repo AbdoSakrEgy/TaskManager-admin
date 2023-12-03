@@ -18,7 +18,7 @@ export class PaginatorOfAllTasksComponent {
 
   constructor(private dataService: DataService) {}
   ngOnInit(): void {
-    this.dataService.getAllTasks().subscribe({
+    this.dataService.getAllTasks(1,2).subscribe({
       next: (res: any) => {
         this.usersDataList = res.tasks;
         this.isLoading.emit(false);

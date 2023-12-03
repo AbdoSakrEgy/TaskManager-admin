@@ -13,6 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [],
@@ -31,6 +32,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     MatBottomSheetModule,
     MatCheckboxModule,
+    MatSnackBarModule,
   ],
   exports: [
     MatButtonModule,
@@ -46,6 +48,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     MatBottomSheetModule,
     MatCheckboxModule,
+    MatSnackBarModule,
   ],
 })
 export class MaterialuiModule {}

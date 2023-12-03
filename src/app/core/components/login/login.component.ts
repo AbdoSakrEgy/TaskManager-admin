@@ -3,6 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +28,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private tokenStorageService: TokenStorageService
+    private tokenStorageService: TokenStorageService,
+    private _snackBar: MatSnackBar
   ) {}
   ngOnInit(): void {
     if (this.tokenStorageService.getToken()) {
@@ -46,11 +49,34 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/all-tasks');
         console.log(res);
         this.tokenStorageService.saveToken(res.token);
+        this._snackBar.openFromComponent(AlertComponent, {
+          data: {
+            message: 'Logg in success!',
+            backgroundColor: '#16a34a',
+            textColor: '#ffffff',
+            isCloseBtnHidden: true,
+          },
+          duration: 2 * 1000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
       },
       error: (error) => {
-        this.errorMessage = error;
+        this.errorMessage = error.error.message;
         this.isLoading = false;
       },
     });
   }
+  // testAlert() {
+  //   this._snackBar.openFromComponent(AlertComponent, {
+  //     data: {
+  //       message: 'Logged In success!',
+  //       backgroundColor: '#16a34a',
+  //       textColor: '#ffffff',
+  //     },
+  //     duration: 1 * 1000,
+  //     horizontalPosition: 'end',
+  //     verticalPosition: 'top',
+  //   });
+  // }
 }
