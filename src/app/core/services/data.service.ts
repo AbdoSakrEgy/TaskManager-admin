@@ -14,7 +14,7 @@ export class DataService {
     const httpOptions = {
       params: new HttpParams().set('page', page).set('limit', limit),
     };
-    return this.http.get(API_URL + '/tasks/all-tasks', httpOptions);
+    return this.http.get(API_URL + '/tasks/all-tasks');
   }
   getAllUsers() {
     return this.http.get(API_URL + '/auth/users');

@@ -53,19 +53,21 @@
       <span class="w-[10%]">Image</span>
       <span class="w-[20%]">Title</span>
       <span class="w-[20%]">User</span>
-      <span class="w-[15%]">DeadLine date</span>
+      <span class="w-[15%]">DeadLine</span>
       <span class="w-[10%]">Status</span>
       <span class="w-[20%]"></span>
     </div>
-    <div class="row-style" *ngFor="let user of users">
-      <span class="w-[5%]">{{ user.position }}</span>
+    <div class="row-style" *ngFor="let task of tasks; index as index">
+      <span class="w-[5%]">{{ index + 1 }}</span>
       <span class="w-[10%]">
-        <img [src]="user.img" alt="img" />
+        <img [src]="task.img" alt="img" />
       </span>
-      <span class="w-[20%]">{{ user.title }}</span>
-      <span class="w-[20%]">{{ user.user }}</span>
-      <span class="w-[15%]">{{ user.deadLine }}</span>
-      <span class="w-[10%]">{{ user.status }}</span>
+      <span class="w-[20%]">{{ task.title }}</span>
+      <span class="w-[20%]">{{ task.userId.username }}</span>
+      <span class="w-[15%]">
+        {{ task.deadline | date : "shortDate" }}
+      </span>
+      <span class="w-[10%]">{{ task.status }}</span>
       <span class="w-[20%] flex gap-3">
         <span class="btn-update">Update</span>
         <span class="btn-delete">Delete</span>
@@ -79,13 +81,13 @@
   <!-- if no data -->
   <div
     class="text-center py-3 text-[#b1b0b2]"
-    *ngIf="!isLoading && users.length === 0"
+    *ngIf="!isLoading && tasks.length === 0"
   >
     No data
   </div>
   <!-- paginator of table -->
   <app-paginator-of-all-tasks
-    (usersDataForParent)="changeUsersData($event)"
+    (tasksDataForParent)="changeTasksData($event)"
     (isLoading)="isLoading = $event"
   ></app-paginator-of-all-tasks>
 </main>

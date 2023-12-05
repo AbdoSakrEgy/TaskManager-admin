@@ -8,19 +8,25 @@ import { DataService } from 'src/app/core/services/data.service';
   styleUrls: ['./paginator-of-all-tasks.component.css'],
 })
 export class PaginatorOfAllTasksComponent {
-  usersDataList = [];
-  usersData: any[] = [];
-  usersDataPerPage: number = 4;
+  tasksDataList = [];
+  tasksData: any[] = [];
+  tasksDataPerPage: number = 4;
   public selectedPage = 1;
   activePageNumber = 1;
-  @Output() usersDataForParent = new EventEmitter<any>();
+  @Output() tasksDataForParent = new EventEmitter<any>();
   @Output() isLoading = new EventEmitter<boolean>(true);
 
   constructor(private dataService: DataService) {}
   ngOnInit(): void {
-    this.dataService.getAllTasks(1,2).subscribe({
+    this.dataService.getAllTasks(1, 10).subscribe({
       next: (res: any) => {
-        this.usersDataList = res.tasks;
+        this.tasksDataList = res.tasks;
+        let pageIndex = (this.selectedPage - 1) * this.tasksDataPerPage;
+        this.tasksData = this.tasksDataList.slice(
+          pageIndex,
+          this.tasksDataPerPage
+        );
+        this.tasksDataForParent.emit(this.tasksData);
         this.isLoading.emit(false);
       },
       error: (error) => {
@@ -28,17 +34,17 @@ export class PaginatorOfAllTasksComponent {
         this.isLoading.emit(false);
       },
     });
-    let pageIndex = (this.selectedPage - 1) * this.usersDataPerPage;
-    this.usersData = this.usersDataList.slice(pageIndex, this.usersDataPerPage);
-    this.usersDataForParent.emit(this.usersData);
+    // let pageIndex = (this.selectedPage - 1) * this.tasksDataPerPage;
+    // this.tasksData = this.tasksDataList.slice(pageIndex, this.tasksDataPerPage);
+    // this.tasksDataForParent.emit(this.tasksData);
   }
   changePageSize(event: Event) {
     const newSize = (event.target as HTMLInputElement).value;
-    this.usersDataPerPage = Number(newSize);
+    this.tasksDataPerPage = Number(newSize);
     this.changePage(1);
   }
   get pageNumbers(): number[] {
-    return Array(Math.ceil(this.usersDataList.length / this.usersDataPerPage))
+    return Array(Math.ceil(this.tasksDataList.length / this.tasksDataPerPage))
       .fill(0)
       .map((x, i) => i + 1);
   }
@@ -48,12 +54,12 @@ export class PaginatorOfAllTasksComponent {
     this.activePageNumber = page;
   }
   slicedTasks() {
-    let pageIndex = (this.selectedPage - 1) * this.usersDataPerPage;
+    let pageIndex = (this.selectedPage - 1) * this.tasksDataPerPage;
     let endIndex =
-      (this.selectedPage - 1) * this.usersDataPerPage + this.usersDataPerPage;
-    this.usersData = [];
-    this.usersData = this.usersDataList.slice(pageIndex, endIndex);
-    this.usersDataForParent.emit(this.usersData);
+      (this.selectedPage - 1) * this.tasksDataPerPage + this.tasksDataPerPage;
+    this.tasksData = [];
+    this.tasksData = this.tasksDataList.slice(pageIndex, endIndex);
+    this.tasksDataForParent.emit(this.tasksData);
   }
   nextPage() {
     if (this.activePageNumber != this.pageNumbers.length) {
@@ -70,7 +76,7 @@ export class PaginatorOfAllTasksComponent {
 }
 
 // =========================
-const usersDataList = [
+const tasksDataList = [
   {
     position: 1,
     img: 'assets/images/img.jpg',

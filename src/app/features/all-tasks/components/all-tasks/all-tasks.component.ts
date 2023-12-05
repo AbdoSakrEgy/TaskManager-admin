@@ -8,21 +8,20 @@ import { AddNewTaskComponent } from '../add-new-task/add-new-task.component';
   styleUrls: ['./all-tasks.component.css'],
 })
 export class AllTasksComponent {
-  users: any = [];
+  tasks: any = [];
   isLoading = true;
-  
-  constructor(public dialog: MatDialog) {
-    
-  }
-  changeUsersData(event: any) {
-    while (this.users.length > 0) {
-      this.users.pop();
-    }
-    this.users.push(...event);
-  }
+
+  constructor(public dialog: MatDialog) {}
   openDialog(): void {
     const dialogRef = this.dialog.open(AddNewTaskComponent, {
       width: '1000px',
     });
+  }
+  changeTasksData(event: any) {
+    while (this.tasks.length > 0) {
+      this.tasks.pop();
+    }
+    this.tasks.push(...event);
+    console.log(this.tasks);
   }
 }
