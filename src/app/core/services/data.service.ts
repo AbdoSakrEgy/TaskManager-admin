@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TOKEN_KEY } from './token-storage.service';
+import { NewTaskModel } from '../models/tasks';
 
 const API_URL = 'https://crud-5swn.onrender.com';
 
@@ -17,5 +18,8 @@ export class DataService {
   }
   getAllUsers() {
     return this.http.get(API_URL + '/auth/users');
+  }
+  createTask(body: any) {
+    return this.http.post(API_URL + '/tasks/add-task', body);
   }
 }

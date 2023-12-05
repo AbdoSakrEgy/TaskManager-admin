@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { Spinner1Component } from './components/spinner1/spinner1.component';
 import { AlertComponent } from './components/alert/alert.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [Spinner1Component, AlertComponent],
@@ -19,6 +20,7 @@ import { AlertComponent } from './components/alert/alert.component';
     MatInputModule,
     MatFormFieldModule,
     HttpClientModule,
+    MatSelectModule,
   ],
   exports: [
     MaterialuiModule,
@@ -28,6 +30,7 @@ import { AlertComponent } from './components/alert/alert.component';
     MatFormFieldModule,
     HttpClientModule,
     Spinner1Component,
+    MatSelectModule,
   ],
 })
 export class SharedModule {}

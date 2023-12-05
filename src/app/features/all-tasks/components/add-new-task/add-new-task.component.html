@@ -14,22 +14,36 @@
     </div>
   </div>
   <!-- body -->
-  <div class="flex flex-col">
+  <form [formGroup]="newTaskForm" enctype="multipart/form-data" class="flex flex-col">
     <mat-form-field>
       <mat-label>Title</mat-label>
-      <input matInput />
+      <input matInput formControlName="title" />
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>User</mat-label>
-      <input matInput />
+      <mat-label>Users</mat-label>
+      <mat-select formControlName="userId">
+        <mat-option [value]="user._id" *ngFor="let user of users">
+          {{ user.username }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
-    <input type="file" style="margin-bottom: 20px" />
+    <div class="flex justify-start items-center gap-3 mb-3">
+      <label for="selectFile" class="btn-selectFile">Add image*</label>
+      <span>{{ imageInput.value }}</span>
+      <input
+        type="file"
+        id="selectFile"
+        hidden
+        #imageInput
+        (change)="selectImage($event)"
+      />
+    </div>
 
     <mat-form-field>
       <mat-label>Choose a date</mat-label>
-      <input matInput [matDatepicker]="picker" />
+      <input matInput formControlName="deadline" [matDatepicker]="picker" />
       <mat-datepicker-toggle
         matIconSuffix
         [for]="picker"
@@ -39,15 +53,25 @@
 
     <mat-form-field>
       <mat-label>Textarea</mat-label>
-      <textarea matInput style="height: 200px"></textarea>
+      <textarea
+        matInput
+        style="height: 200px"
+        formControlName="description"
+      ></textarea>
     </mat-form-field>
-  </div>
+  </form>
   <!-- footer -->
   <div class="flex justify-center gap-3">
     <button
-      [class]="{ 'btn-create-active': false, 'btn-create-inactive': true }"
+      (click)="createTask()"
+      [disabled]="newTaskForm.invalid || isLoading"
+      [class]="{
+        'btn-create-active': newTaskForm.valid && !isLoading,
+        'btn-create-inactive': !newTaskForm.valid || isLoading
+      }"
     >
-      Create
+      <span *ngIf="!isLoading">Create</span>
+      <span *ngIf="isLoading">Loading...</span>
     </button>
     <button class="btn-close" (click)="onNoClick()">Close</button>
   </div>

@@ -74,7 +74,6 @@ export class LoginComponent implements OnInit {
   //       backgroundColor: '#16a34a',
   //       textColor: '#ffffff',
   //     },
-  //     duration: 1 * 1000,
   //     horizontalPosition: 'end',
   //     verticalPosition: 'top',
   //   });

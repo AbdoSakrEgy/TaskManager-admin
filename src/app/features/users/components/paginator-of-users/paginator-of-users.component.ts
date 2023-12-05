@@ -23,7 +23,6 @@ export class PaginatorOfUsersComponent {
     this.usersDataForParent.emit(this.usersData);
     this.dataService.getAllUsers().subscribe({
       next: (res: any) => {
-        console.log(res);
         this.usersDataList = res.users;
         this.slicedTasks();
         this.isLoadin.emit(false);
