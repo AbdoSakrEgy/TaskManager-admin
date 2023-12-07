@@ -1,25 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Login, Register } from '../models/login-register';
+import { LoginModel, RegisterModel } from '../models/auth';
 
 const AUTH_API = 'https://crud-5swn.onrender.com';
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-};
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(private http: HttpClient) {}
-  login(loginModel: Login) {
-    return this.http.post(AUTH_API + '/auth/login', loginModel, httpOptions);
+  login(body: LoginModel) {
+    return this.http.post(AUTH_API + '/auth/login', body);
   }
-  register(registerModel: Register) {
-    return this.http.post(
-      AUTH_API + '/auth/createAccount',
-      registerModel,
-      httpOptions
-    );
+  register(body: RegisterModel) {
+    return this.http.post(AUTH_API + '/auth/createAccount', body);
   }
 }

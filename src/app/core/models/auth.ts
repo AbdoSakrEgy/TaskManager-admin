@@ -1,10 +1,10 @@
-export interface Login {
+export interface LoginModel {
   email: string;
   password: string;
   role: string;
 }
 
-export interface Register {
+export interface RegisterModel {
   email: string;
   password: string;
   username: string;

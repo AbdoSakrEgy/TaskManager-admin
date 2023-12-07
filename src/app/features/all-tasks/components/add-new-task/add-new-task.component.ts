@@ -14,7 +14,7 @@ export class AddNewTaskComponent implements OnInit {
   newTaskForm = this.formBuilder.group({
     title: ['', Validators.required],
     userId: ['', Validators.required],
-    // image: ['', Validators.required],
+    image: ['', Validators.required],
     description: ['', Validators.required],
     deadline: ['', Validators.required],
   });
@@ -32,7 +32,7 @@ export class AddNewTaskComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getAllUsers().subscribe({
       next: (res: any) => {
-        this.users = res.users;
+        this.users = res.users.reverse();
       },
       error: (error) => {
         console.log(error);
@@ -43,6 +43,7 @@ export class AddNewTaskComponent implements OnInit {
     this.dialogRef.close();
   }
   selectImage(event: any) {
+    this.newTaskForm.get('image')?.setValue(event.target.files[0]);
     const imageFile: File = event.target.files[0];
     if (imageFile) {
       this.imageFile = imageFile;
@@ -66,7 +67,7 @@ export class AddNewTaskComponent implements OnInit {
           verticalPosition: 'top',
           duration: 4000,
           data: {
-            message: 'Task created!',
+            message: 'Task created successfully',
             backgroundColor: '#16a34a',
             textColor: '#ffffff',
             isCloseBtnHidden: false,

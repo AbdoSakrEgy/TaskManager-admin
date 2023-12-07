@@ -9,20 +9,20 @@
     <div
       class="flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white"
     >
-      <span class="w-[10%]">No.</span>
-      <span class="w-[20%]">Name</span>
+      <span class="w-[5%]">No.</span>
+      <span class="w-[15%]">Name</span>
       <span class="w-[20%]">Email</span>
       <span class="w-[20%]">Assigned Tasks</span>
-      <span class="w-[10%]">Status</span>
-      <span class="w-[20%]"></span>
+      <span class="w-[15%]">Status</span>
+      <span class="w-[25%]"></span>
     </div>
     <div class="row-style" *ngFor="let user of users; let index = index">
-      <span class="w-[10%]">{{ index + 1 }}</span>
-      <span class="w-[20%]">{{ user.username }}</span>
+      <span class="w-[5%]">{{ index + 1 }}</span>
+      <span class="w-[15%]">{{ user.username }}</span>
       <span class="w-[20%]">{{ user.email }}</span>
-      <span class="w-[20%]">{{ user.assignedTasks }}</span>
-      <span class="w-[10%]">{{ user.status }}</span>
-      <span class="w-[20%] flex gap-3">
+      <span class="w-[20%] text-center">{{ user.assignedTasks }}</span>
+      <span class="w-[15%]">{{ user.status }}</span>
+      <span class="w-[25%] flex gap-3">
         <span class="btn-update">Update</span>
         <span class="btn-delete">Delete</span>
       </span>

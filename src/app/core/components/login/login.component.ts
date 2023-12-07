@@ -47,11 +47,10 @@ export class LoginComponent implements OnInit {
     this.authService.login(MODEL).subscribe({
       next: (res: any) => {
         this.router.navigateByUrl('/all-tasks');
-        console.log(res);
         this.tokenStorageService.saveToken(res.token);
         this._snackBar.openFromComponent(AlertComponent, {
           data: {
-            message: 'Logg in success!',
+            message: 'Logged in successfully',
             backgroundColor: '#16a34a',
             textColor: '#ffffff',
             isCloseBtnHidden: true,

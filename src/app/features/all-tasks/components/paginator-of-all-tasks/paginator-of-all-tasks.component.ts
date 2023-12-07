@@ -20,7 +20,7 @@ export class PaginatorOfAllTasksComponent {
   ngOnInit(): void {
     this.dataService.getAllTasks(1, 10).subscribe({
       next: (res: any) => {
-        this.tasksDataList = res.tasks;
+        this.tasksDataList = res.tasks.reverse();
         let pageIndex = (this.selectedPage - 1) * this.tasksDataPerPage;
         this.tasksData = this.tasksDataList.slice(
           pageIndex,
@@ -34,9 +34,6 @@ export class PaginatorOfAllTasksComponent {
         this.isLoading.emit(false);
       },
     });
-    // let pageIndex = (this.selectedPage - 1) * this.tasksDataPerPage;
-    // this.tasksData = this.tasksDataList.slice(pageIndex, this.tasksDataPerPage);
-    // this.tasksDataForParent.emit(this.tasksData);
   }
   changePageSize(event: Event) {
     const newSize = (event.target as HTMLInputElement).value;
@@ -74,87 +71,3 @@ export class PaginatorOfAllTasksComponent {
     }
   }
 }
-
-// =========================
-const tasksDataList = [
-  {
-    position: 1,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-  {
-    position: 2,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-  {
-    position: 3,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-  {
-    position: 4,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-  {
-    position: 5,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-  {
-    position: 6,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-  {
-    position: 7,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-  {
-    position: 8,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-  {
-    position: 9,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-  {
-    position: 10,
-    img: 'assets/images/img.jpg',
-    title: 'title',
-    user: 'ali',
-    deadLine: '24/7/2024',
-    status: 'pending',
-  },
-];

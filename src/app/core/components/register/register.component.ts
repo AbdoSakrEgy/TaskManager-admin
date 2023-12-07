@@ -21,7 +21,11 @@ export class RegisterComponent {
     {
       userName: [
         '',
-        [Validators.required, Validators.minLength(4), Validators.maxLength(10)],
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(10),
+        ],
       ],
       email: ['', [Validators.required, Validators.email]],
       password: [
@@ -50,13 +54,13 @@ export class RegisterComponent {
   onRegister() {
     this.isLoading = true;
     this.errorMessage = '';
-    const MODEL = {
+    const body = {
       email: this.registerForm.get('email')?.value!,
       password: this.registerForm.get('password')?.value!,
       username: this.registerForm.get('userName')?.value!,
       role: 'user',
     };
-    this.authService.register(MODEL).subscribe({
+    this.authService.register(body).subscribe({
       next: (res: any) => {
         console.log(res);
         this.router.navigateByUrl('/all-tasks');
