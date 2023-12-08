@@ -73,6 +73,7 @@ export class AddNewTaskComponent implements OnInit {
             isCloseBtnHidden: false,
           },
         });
+        this.dialogRef.close();
       },
       error: (error) => {
         console.log(error);

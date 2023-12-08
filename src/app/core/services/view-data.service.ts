@@ -1,29 +1,18 @@
-import { Component } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
-import { DataService } from 'src/app/core/services/data.service';
-import { ViewDataService } from 'src/app/core/services/view-data.service';
+import { Injectable } from '@angular/core';
+import { DataService } from './data.service';
 
-@Component({
-  selector: 'app-paginator-of-all-tasks',
-  templateUrl: './paginator-of-all-tasks.component.html',
-  styleUrls: ['./paginator-of-all-tasks.component.css'],
+@Injectable({
+  providedIn: 'root',
 })
-export class PaginatorOfAllTasksComponent {
+export class ViewDataService {
   tasksDataList = [];
   tasksData: any[] = [];
   tasksDataPerPage: number = 4;
   public selectedPage = 1;
   activePageNumber = 1;
-  @Output() tasksDataForParent = new EventEmitter<any>();
-  @Output() isLoading = new EventEmitter<boolean>(true);
+  isLoading: boolean = false;
 
-  constructor(
-    private dataService: DataService,
-    private viewDataService: ViewDataService
-  ) {}
-  ngOnInit(): void {
-    this.getAllTasks();
-  }
+  constructor(private dataService: DataService) {}
   getAllTasks() {
     this.dataService.getAllTasks(1, 10).subscribe({
       next: (res: any) => {
@@ -33,12 +22,11 @@ export class PaginatorOfAllTasksComponent {
           pageIndex,
           this.tasksDataPerPage
         );
-        this.tasksDataForParent.emit(this.tasksData);
-        this.isLoading.emit(false);
+        this.isLoading = false;
       },
       error: (error) => {
         console.log(error);
-        this.isLoading.emit(false);
+        this.isLoading = false;
       },
     });
   }
@@ -63,7 +51,6 @@ export class PaginatorOfAllTasksComponent {
       (this.selectedPage - 1) * this.tasksDataPerPage + this.tasksDataPerPage;
     this.tasksData = [];
     this.tasksData = this.tasksDataList.slice(pageIndex, endIndex);
-    this.tasksDataForParent.emit(this.tasksData);
   }
   nextPage() {
     if (this.activePageNumber != this.pageNumbers.length) {
