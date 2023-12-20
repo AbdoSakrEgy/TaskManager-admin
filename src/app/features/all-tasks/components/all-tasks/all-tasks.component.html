@@ -58,7 +58,7 @@
       <span class="w-[25%]"></span>
     </div>
     <div class="row-style" *ngFor="let task of tasksToView; index as index">
-      <span class="w-[5%]">{{ index + 1 }}</span>
+      <span class="w-[5%]">{{ firstRowPosition + index }}</span>
       <!-- <span class="w-[10%]">
         <img [src]="task.image" alt="img" />
       </span> -->

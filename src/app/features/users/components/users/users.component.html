@@ -16,8 +16,8 @@
       <span class="w-[15%]">Status</span>
       <span class="w-[25%]"></span>
     </div>
-    <div class="row-style" *ngFor="let user of users; let index = index">
-      <span class="w-[5%]">{{ index + 1 }}</span>
+    <div class="row-style" *ngFor="let user of usersToView; index as index">
+      <span class="w-[5%]">{{ firstRowPosition + index }}</span>
       <span class="w-[15%]">{{ user.username }}</span>
       <span class="w-[20%]">{{ user.email }}</span>
       <span class="w-[20%] text-center">{{ user.assignedTasks }}</span>
@@ -28,20 +28,17 @@
       </span>
     </div>
     <!-- if loading -->
-    <div class="text-center py-3" *ngIf="isLoading">
+    <!-- <div class="text-center py-3" *ngIf="isLoading">
       <app-spinner1></app-spinner1>
-    </div>
+    </div> -->
     <!-- if no data -->
-    <div
+    <!-- <div
       class="text-center py-3 text-[#b1b0b2]"
       *ngIf="!isLoading && users.length === 0"
     >
       No data
-    </div>
+    </div> -->
   </div>
   <!-- paginator of table -->
-  <app-paginator-of-users
-    (usersDataForParent)="changeUsersData($event)"
-    (isLoadin)="isLoading = $event"
-  ></app-paginator-of-users>
+  <app-paginator-of-users></app-paginator-of-users>
 </main>

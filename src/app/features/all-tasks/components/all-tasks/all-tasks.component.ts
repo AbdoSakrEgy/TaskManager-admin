@@ -23,8 +23,11 @@ import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTa
 })
 export class AllTasksComponent implements OnInit {
   tasksToView: any[] = [];
+  firstRowPosition: number = 1;
   isTasksToViewUpdated$ = this.store.select(selectPaginationTasks).subscribe({
     next: (res: any) => {
+      const firstRowPosition = res.tasksPerPage * (res.selectedPage - 1) + 1;
+      this.firstRowPosition = firstRowPosition;
       this.tasksToView = res.tasks;
     },
   });

@@ -15,6 +15,8 @@ import { httpInterceptorProviders } from './core/interceptors';
 import { StoreModule } from '@ngrx/store';
 import { tasksReducer } from './core/store/reducers/tasks.reducers';
 import { paginationTasksReducer } from './core/store/reducers/paginationTasks.reducers';
+import { usersReducer } from './core/store/reducers/users.reducers';
+import { paginationUsersReducer } from './core/store/reducers/paginationUsers.reducers';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { paginationTasksReducer } from './core/store/reducers/paginationTasks.re
     StoreModule.forRoot({
       tasks: tasksReducer,
       paginationTasks: paginationTasksReducer,
+      users: usersReducer,
+      paginationUsers: paginationUsersReducer,
     }),
   ],
   providers: httpInterceptorProviders,

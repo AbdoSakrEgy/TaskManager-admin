@@ -16,9 +16,8 @@ export class PaginatorOfAllTasksComponent implements OnInit {
   selectedPage = 1;
   pageNumbers = [1];
   activePageNumber = 1;
-  updateMainData$ = this.store.select(selectTasks).subscribe({
+  isMainDataUpdated$ = this.store.select(selectTasks).subscribe({
     next: (res: any) => {
-      this.mainData = res;
       this.store.select(selectPaginationTasks).subscribe({
         next: (res: any) => {
           this.tasks = res.tasks;
@@ -28,10 +27,11 @@ export class PaginatorOfAllTasksComponent implements OnInit {
           this.activePageNumber = res.activePageNumber;
         },
       });
+      this.mainData = res;
       this.setPage(this.selectedPage);
     },
   });
-  updateLocalPaginationTasks$ = this.store
+  isLocalPaginationTasksUpdated$ = this.store
     .select(selectPaginationTasks)
     .subscribe({
       next: (res: any) => {

@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { DataService } from './core/services/data.service';
 import { Store } from '@ngrx/store';
 import { updateTasksList } from './core/store/actions/tasks.actions';
+import { updateUsers } from './core/store/actions/users.actions';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,7 @@ export class AppComponent {
       }
     });
     this.getAllTasks();
+    this.getAllUsers();
   }
   getAllTasks() {
     this.dataService.getAllTasks(1, 10).subscribe({
@@ -46,7 +48,9 @@ export class AppComponent {
   }
   getAllUsers() {
     this.dataService.getAllUsers().subscribe({
-      next: (res: any) => {},
+      next: (res: any) => {
+        this.store.dispatch(updateUsers({ data: res.users }));
+      },
       error: (error) => {
         console.log(error);
       },

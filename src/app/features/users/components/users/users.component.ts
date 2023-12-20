@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { selectPaginationUsers } from 'src/app/core/store/selectors/paginationUsers.selectors';
 
 @Component({
   selector: 'app-users',
@@ -6,13 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent {
-  users: any = [];
-  isLoading = true;
+  usersToView: any[] = [];
+  firstRowPosition: number = 1;
+  isusersToViewUpdated$ = this.store.select(selectPaginationUsers).subscribe({
+    next: (res: any) => {
+      const firstRowPosition = res.usersPerPage * (res.selectedPage - 1) + 1;
+      this.firstRowPosition = firstRowPosition;
+      this.usersToView = res.users;
+    },
+  });
 
-  changeUsersData(event: any) {
-    while (this.users.length > 0) {
-      this.users.pop();
-    }
-    this.users.push(...event);
-  }
+  constructor(private store: Store) {}
 }

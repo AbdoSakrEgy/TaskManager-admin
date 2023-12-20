@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
-import { DataService } from 'src/app/core/services/data.service';
+import { Store } from '@ngrx/store';
+import { updatePaginationUsersInfo } from 'src/app/core/store/actions/paginationUsers.actions';
+import { selectPaginationUsers } from 'src/app/core/store/selectors/paginationUsers.selectors';
+import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({
   selector: 'app-paginator-of-users',
@@ -8,64 +10,73 @@ import { DataService } from 'src/app/core/services/data.service';
   styleUrls: ['./paginator-of-users.component.css'],
 })
 export class PaginatorOfUsersComponent {
-  usersDataList: any[] = [];
-  usersData: any[] = [];
-  usersDataPerPage: number = 4;
-  public selectedPage = 1;
+  usersList = [];
+  users: any[] = [];
+  usersPerPage = 4;
+  selectedPage = 1;
+  pageNumbers = [1];
   activePageNumber = 1;
-  @Output() usersDataForParent = new EventEmitter<any>();
-  @Output() isLoadin = new EventEmitter<boolean>(true);
+  isUsersListUpdated$ = this.store.select(selectUsers).subscribe({
+    next: (res: any) => {
+      this.store.select(selectPaginationUsers).subscribe({
+        next: (res: any) => {
+          this.users = res.users;
+          this.usersPerPage = res.usersPerPage;
+          this.selectedPage = res.selectedPage;
+          this.pageNumbers = res.pageNumbers;
+          this.activePageNumber = res.activePageNumber;
+        },
+      });
+      this.usersList = res;
+      this.setPage(this.selectedPage);
+    },
+  });
 
-  constructor(private dataService: DataService) {}
-  ngOnInit(): void {
-    let pageIndex = (this.selectedPage - 1) * this.usersDataPerPage;
-    this.usersData = this.usersDataList.slice(pageIndex, this.usersDataPerPage);
-    this.usersDataForParent.emit(this.usersData);
-    this.dataService.getAllUsers().subscribe({
-      next: (res: any) => {
-        this.usersDataList = res.users.reverse();
-        this.slicedTasks();
-        this.isLoadin.emit(false);
-      },
-      error: (error) => {
-        console.log(error);
-        this.isLoadin.emit(false);
-      },
-    });
+  constructor(private store: Store) {}
+  ngOnInit(): void {}
+  setPage(page: number) {
+    // set [usersList-usersPerPage-selectedPage-pageNumbers-activePageNumber]
+    const startIndex = (page - 1) * this.usersPerPage;
+    const endIndex = startIndex + this.usersPerPage;
+    this.users = this.usersList.slice(startIndex, endIndex);
+    this.activePageNumber = page;
+    this.selectedPage = page;
+    // set pageNumbers
+    const pageCount = Math.ceil(this.usersList.length / this.usersPerPage);
+    const maxPageCount = 100; // Choose a reasonable maximum page count
+    this.pageNumbers = [];
+    for (let i = 1; i <= Math.min(pageCount, maxPageCount); i++) {
+      this.pageNumbers.push(i);
+    }
+    // update data to store
+    this.store.dispatch(
+      updatePaginationUsersInfo({
+        data: {
+          users: this.users,
+          usersPerPage: this.usersPerPage,
+          selectedPage: this.selectedPage,
+          pageNumbers: this.pageNumbers,
+          activePageNumber: this.activePageNumber,
+        },
+      })
+    );
   }
+  // changePageSize() - changePage()
   changePageSize(event: Event) {
     const newSize = (event.target as HTMLInputElement).value;
-    this.usersDataPerPage = Number(newSize);
-    this.changePage(1);
-  }
-  get pageNumbers(): number[] {
-    return Array(Math.ceil(this.usersDataList.length / this.usersDataPerPage))
-      .fill(0)
-      .map((x, i) => i + 1);
+    this.usersPerPage = +newSize;
+    this.setPage(1);
   }
   changePage(page: any) {
-    this.selectedPage = page;
-    this.slicedTasks();
-    this.activePageNumber = page;
+    if (page >= 1 && page <= this.pageNumbers.length) {
+      this.setPage(page);
+    }
   }
-  slicedTasks() {
-    let pageIndex = (this.selectedPage - 1) * this.usersDataPerPage;
-    let endIndex =
-      (this.selectedPage - 1) * this.usersDataPerPage + this.usersDataPerPage;
-    this.usersData = [];
-    this.usersData = this.usersDataList.slice(pageIndex, endIndex);
-    this.usersDataForParent.emit(this.usersData);
+  // previousPage() - nextPage()
+  previousPage() {
+    this.changePage(this.selectedPage - 1);
   }
   nextPage() {
-    if (this.activePageNumber != this.pageNumbers.length) {
-      this.activePageNumber = this.activePageNumber + 1;
-      this.changePage(this.activePageNumber);
-    }
-  }
-  previousPage() {
-    if (this.activePageNumber != 1) {
-      this.activePageNumber = this.activePageNumber - 1;
-      this.changePage(this.activePageNumber);
-    }
+    this.changePage(this.selectedPage + 1);
   }
 }
