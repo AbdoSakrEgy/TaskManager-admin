@@ -12,6 +12,9 @@ import { SharedModule } from './shared/shared.module';
 import { AllTasksModule } from './features/all-tasks/all-tasks.module';
 import { UsersModule } from './features/users/users.module';
 import { httpInterceptorProviders } from './core/interceptors';
+import { StoreModule } from '@ngrx/store';
+import { tasksReducer } from './core/store/reducers/tasks.reducers';
+import { paginationTasksReducer } from './core/store/reducers/paginationTasks.reducers';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,10 @@ import { httpInterceptorProviders } from './core/interceptors';
     SharedModule,
     AllTasksModule,
     UsersModule,
+    StoreModule.forRoot({
+      tasks: tasksReducer,
+      paginationTasks: paginationTasksReducer,
+    }),
   ],
   providers: httpInterceptorProviders,
   bootstrap: [AppComponent],

@@ -57,7 +57,7 @@
       <span class="w-[15%]">Status</span>
       <span class="w-[25%]"></span>
     </div>
-    <div class="row-style" *ngFor="let task of tasks; index as index">
+    <div class="row-style" *ngFor="let task of tasksToView; index as index">
       <span class="w-[5%]">{{ index + 1 }}</span>
       <!-- <span class="w-[10%]">
         <img [src]="task.image" alt="img" />
@@ -70,26 +70,23 @@
       <span class="w-[15%]">{{ task.status }}</span>
       <span class="w-[25%] flex gap-3">
         <span class="btn-update">Update</span>
-        <span class="btn-delete" (click)="removeTaskDialog(task._id)"
-          >Delete</span
-        >
+        <span class="btn-delete" (click)="removeTaskDialog(task._id)">
+          Delete
+        </span>
       </span>
     </div>
   </div>
   <!-- if loading -->
-  <div class="text-center py-3" *ngIf="isLoading">
+  <!-- <div class="text-center py-3" *ngIf="isLoading">
     <app-spinner1></app-spinner1>
-  </div>
+  </div> -->
   <!-- if no data -->
-  <div
+  <!-- <div
     class="text-center py-3 text-[#b1b0b2]"
     *ngIf="!isLoading && tasks.length === 0"
   >
     No data
-  </div>
+  </div> -->
   <!-- paginator of table -->
-  <app-paginator-of-all-tasks
-    (tasksDataForParent)="changeTasksData($event)"
-    (isLoading)="isLoading = $event"
-  ></app-paginator-of-all-tasks>
+  <app-paginator-of-all-tasks></app-paginator-of-all-tasks>
 </main>

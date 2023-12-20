@@ -1,12 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
   MatDialogRef,
-  MatDialogTitle,
 } from '@angular/material/dialog';
 import { AddNewTaskComponent } from '../add-new-task/add-new-task.component';
 import { DataService } from 'src/app/core/services/data.service';
@@ -16,68 +12,68 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { Output, EventEmitter } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { updateTasksList } from 'src/app/core/store/actions/tasks.actions';
+import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTasks.selectors';
 
 @Component({
   selector: 'app-all-tasks',
   templateUrl: './all-tasks.component.html',
   styleUrls: ['./all-tasks.component.css'],
 })
-export class AllTasksComponent {
-  tasks: any = [];
-  isLoading = true;
+export class AllTasksComponent implements OnInit {
+  tasksToView: any[] = [];
+  isTasksToViewUpdated$ = this.store.select(selectPaginationTasks).subscribe({
+    next: (res: any) => {
+      this.tasksToView = res.tasks;
+    },
+  });
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private store: Store) {}
   createTaskDialog(): void {
     const dialogRef = this.dialog.open(AddNewTaskComponent, {
       width: '1000px',
     });
   }
+  ngOnInit(): void {}
   removeTaskDialog(taskId: any): void {
     const dialogRef = this.dialog.open(RemoveTaskConfirm, {
       data: { taskId: taskId },
     });
   }
-  changeTasksData(event: any) {
-    while (this.tasks.length > 0) {
-      this.tasks.pop();
-    }
-    this.tasks.push(...event);
-    console.log(this.tasks);
-  }
 }
 
-// standalone component
+// ======================== standalone component ========================
 @Component({
   selector: 'remove-task-confirm',
-  templateUrl: '../../pages/remove-task-confirm.html',
+  template: `
+    <main class="p-5">
+      <div class="text-lg mb-5">Do you want to remove the task?</div>
+      <div class="flex justify-start gap-5">
+        <button mat-stroked-button (click)="onNoClick()">Cancle</button>
+        <button mat-raised-button color="warn" (click)="removeTask()">
+          Delete
+        </button>
+      </div>
+    </main>
+  `,
   standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    // MatDialogTitle,
-    // MatDialogContent,
-    // MatDialogActions,
-    // MatDialogClose,
-  ],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule],
 })
 export class RemoveTaskConfirm {
   constructor(
     public dialogRef: MatDialogRef<RemoveTaskConfirm>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dataService: DataService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private store: Store
   ) {}
   onNoClick(): void {
     this.dialogRef.close();
   }
   removeTask() {
-    console.log(this.data.taskId);
     this.dataService.removeTask(this.data.taskId).subscribe({
       next: (res: any) => {
-        console.log(res);
         this._snackBar.openFromComponent(AlertComponent, {
           horizontalPosition: 'end',
           verticalPosition: 'top',
@@ -87,6 +83,14 @@ export class RemoveTaskConfirm {
             backgroundColor: '#16a34a',
             textColor: '#ffffff',
             isCloseBtnHidden: false,
+          },
+        });
+        this.dataService.getAllTasks(1, 10).subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateTasksList({ data: res.tasks.reverse() }));
+          },
+          error: (error) => {
+            console.log(error);
           },
         });
         this.dialogRef.close();

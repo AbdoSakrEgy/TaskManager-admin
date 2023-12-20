@@ -4,6 +4,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { DataService } from 'src/app/core/services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
+import { Store } from '@ngrx/store';
+import { updateTasksList } from 'src/app/core/store/actions/tasks.actions';
 
 @Component({
   selector: 'app-add-new-task',
@@ -27,7 +29,8 @@ export class AddNewTaskComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private dataService: DataService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private store: Store
   ) {}
   ngOnInit(): void {
     this.dataService.getAllUsers().subscribe({
@@ -74,6 +77,14 @@ export class AddNewTaskComponent implements OnInit {
           },
         });
         this.dialogRef.close();
+        this.dataService.getAllTasks(1, 10).subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateTasksList({ data: res.tasks.reverse() }));
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
       },
       error: (error) => {
         console.log(error);

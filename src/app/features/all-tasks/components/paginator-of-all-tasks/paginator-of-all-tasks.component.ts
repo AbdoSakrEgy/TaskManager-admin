@@ -1,80 +1,93 @@
-import { Component } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
-import { DataService } from 'src/app/core/services/data.service';
-import { ViewDataService } from 'src/app/core/services/view-data.service';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { updatePaginationTasksData } from 'src/app/core/store/actions/paginationTasks.actions';
+import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTasks.selectors';
+import { selectTasks } from 'src/app/core/store/selectors/tasks.selectors';
 
 @Component({
   selector: 'app-paginator-of-all-tasks',
   templateUrl: './paginator-of-all-tasks.component.html',
   styleUrls: ['./paginator-of-all-tasks.component.css'],
 })
-export class PaginatorOfAllTasksComponent {
-  tasksDataList = [];
-  tasksData: any[] = [];
-  tasksDataPerPage: number = 4;
-  public selectedPage = 1;
+export class PaginatorOfAllTasksComponent implements OnInit {
+  mainData: any[] = [];
+  tasks: any[] = [];
+  tasksPerPage = 4;
+  selectedPage = 1;
+  pageNumbers = [1];
   activePageNumber = 1;
-  @Output() tasksDataForParent = new EventEmitter<any>();
-  @Output() isLoading = new EventEmitter<boolean>(true);
-
-  constructor(
-    private dataService: DataService,
-    private viewDataService: ViewDataService
-  ) {}
-  ngOnInit(): void {
-    this.getAllTasks();
-  }
-  getAllTasks() {
-    this.dataService.getAllTasks(1, 10).subscribe({
+  updateMainData$ = this.store.select(selectTasks).subscribe({
+    next: (res: any) => {
+      this.mainData = res;
+      this.store.select(selectPaginationTasks).subscribe({
+        next: (res: any) => {
+          this.tasks = res.tasks;
+          this.tasksPerPage = res.tasksPerPage;
+          this.selectedPage = res.selectedPage;
+          this.pageNumbers = res.pageNumbers;
+          this.activePageNumber = res.activePageNumber;
+        },
+      });
+      this.setPage(this.selectedPage);
+    },
+  });
+  updateLocalPaginationTasks$ = this.store
+    .select(selectPaginationTasks)
+    .subscribe({
       next: (res: any) => {
-        this.tasksDataList = res.tasks.reverse();
-        let pageIndex = (this.selectedPage - 1) * this.tasksDataPerPage;
-        this.tasksData = this.tasksDataList.slice(
-          pageIndex,
-          this.tasksDataPerPage
-        );
-        this.tasksDataForParent.emit(this.tasksData);
-        this.isLoading.emit(false);
-      },
-      error: (error) => {
-        console.log(error);
-        this.isLoading.emit(false);
+        this.tasks = res.tasks;
+        this.tasksPerPage = res.tasksPerPage;
+        this.selectedPage = res.selectedPage;
+        this.pageNumbers = res.pageNumbers;
+        this.activePageNumber = res.activePageNumber;
       },
     });
+
+  constructor(private store: Store) {}
+  ngOnInit(): void {}
+  setPage(page: number) {
+    // set [mainData-tasksPerPage-selectedPage-pageNumbers-activePageNumber]
+    const startIndex = (page - 1) * this.tasksPerPage;
+    const endIndex = startIndex + this.tasksPerPage;
+    this.tasks = this.mainData.slice(startIndex, endIndex);
+    this.activePageNumber = page;
+    this.selectedPage = page;
+    // set pageNumbers
+    const pageCount = Math.ceil(this.mainData.length / this.tasksPerPage);
+    const maxPageCount = 100; // Choose a reasonable maximum page count
+    this.pageNumbers = [];
+    for (let i = 1; i <= Math.min(pageCount, maxPageCount); i++) {
+      this.pageNumbers.push(i);
+    }
+    // update store data
+    this.store.dispatch(
+      updatePaginationTasksData({
+        data: {
+          tasks: this.tasks,
+          tasksPerPage: this.tasksPerPage,
+          selectedPage: this.selectedPage,
+          pageNumbers: this.pageNumbers,
+          activePageNumber: this.activePageNumber,
+        },
+      })
+    );
   }
+  // changePageSize() - changePage()
   changePageSize(event: Event) {
     const newSize = (event.target as HTMLInputElement).value;
-    this.tasksDataPerPage = Number(newSize);
-    this.changePage(1);
-  }
-  get pageNumbers(): number[] {
-    return Array(Math.ceil(this.tasksDataList.length / this.tasksDataPerPage))
-      .fill(0)
-      .map((x, i) => i + 1);
+    this.tasksPerPage = +newSize;
+    this.setPage(1);
   }
   changePage(page: any) {
-    this.selectedPage = page;
-    this.slicedTasks();
-    this.activePageNumber = page;
+    if (page >= 1 && page <= this.pageNumbers.length) {
+      this.setPage(page);
+    }
   }
-  slicedTasks() {
-    let pageIndex = (this.selectedPage - 1) * this.tasksDataPerPage;
-    let endIndex =
-      (this.selectedPage - 1) * this.tasksDataPerPage + this.tasksDataPerPage;
-    this.tasksData = [];
-    this.tasksData = this.tasksDataList.slice(pageIndex, endIndex);
-    this.tasksDataForParent.emit(this.tasksData);
+  // previousPage() - nextPage()
+  previousPage() {
+    this.changePage(this.selectedPage - 1);
   }
   nextPage() {
-    if (this.activePageNumber != this.pageNumbers.length) {
-      this.activePageNumber = this.activePageNumber + 1;
-      this.changePage(this.activePageNumber);
-    }
-  }
-  previousPage() {
-    if (this.activePageNumber != 1) {
-      this.activePageNumber = this.activePageNumber - 1;
-      this.changePage(this.activePageNumber);
-    }
+    this.changePage(this.selectedPage + 1);
   }
 }
