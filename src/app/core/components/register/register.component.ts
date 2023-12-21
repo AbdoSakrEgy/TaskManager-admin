@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { DataService } from '../../services/data.service';
 import { Store } from '@ngrx/store';
-import { updateTasksList } from '../../store/actions/tasks.actions';
+import { updateTasks } from '../../store/actions/tasks.actions';
 import { updateUsers } from '../../store/actions/users.actions';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -70,12 +70,12 @@ export class RegisterComponent {
         this.isSignUpFailed = false;
         this.dataService.getAllTasks(1, 10).subscribe({
           next: (res: any) => {
-            this.store.dispatch(updateTasksList({ data: res.tasks.reverse() }));
+            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
           },
         });
         this.dataService.getAllUsers().subscribe({
           next: (res: any) => {
-            this.store.dispatch(updateUsers({ data: res.users.reverse() }));
+            this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
           },
         });
         this._snackBar.openFromComponent(AlertComponent, {

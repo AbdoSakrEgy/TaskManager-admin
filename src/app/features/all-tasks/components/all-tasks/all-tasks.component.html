@@ -77,16 +77,16 @@
     </div>
   </div>
   <!-- if loading -->
-  <!-- <div class="text-center py-3" *ngIf="isLoading">
+  <div class="text-center py-3" *ngIf="isLoading">
     <app-spinner1></app-spinner1>
-  </div> -->
+  </div>
   <!-- if no data -->
-  <!-- <div
+  <div
     class="text-center py-3 text-[#b1b0b2]"
     *ngIf="!isLoading && tasksToView.length === 0"
   >
     No data
-  </div> -->
+  </div>
   <!-- paginator of table -->
   <app-paginator-of-all-tasks></app-paginator-of-all-tasks>
 </main>

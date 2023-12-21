@@ -5,7 +5,7 @@ import { DataService } from 'src/app/core/services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { Store } from '@ngrx/store';
-import { updateTasksList } from 'src/app/core/store/actions/tasks.actions';
+import { updateTasks } from 'src/app/core/store/actions/tasks.actions';
 import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({
@@ -21,9 +21,9 @@ export class AddNewTaskComponent implements OnInit {
     description: ['', Validators.required],
     deadline: ['', Validators.required],
   });
-  users$ = this.store.select(selectUsers);
   isLoading: boolean = false;
   imageFile: File | null = null;
+  users$ = this.store.select(selectUsers);
 
   constructor(
     public dialogRef: MatDialogRef<AddNewTaskComponent>,
@@ -71,7 +71,7 @@ export class AddNewTaskComponent implements OnInit {
         this.dialogRef.close();
         this.dataService.getAllTasks(1, 10).subscribe({
           next: (res: any) => {
-            this.store.dispatch(updateTasksList({ data: res.tasks.reverse() }));
+            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
           },
           error: (error) => {
             console.log(error);

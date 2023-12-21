@@ -2,8 +2,14 @@ import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { DataService } from './core/services/data.service';
 import { Store } from '@ngrx/store';
-import { updateTasksList } from './core/store/actions/tasks.actions';
-import { updateUsers } from './core/store/actions/users.actions';
+import {
+  updateIsLoadingUsers,
+  updateUsers,
+} from './core/store/actions/users.actions';
+import {
+  updateIsLoadingTasks,
+  updateTasks,
+} from './core/store/actions/tasks.actions';
 
 @Component({
   selector: 'app-root',
@@ -37,24 +43,28 @@ export class AppComponent {
     this.getAllUsers();
   }
   getAllTasks() {
+    this.store.dispatch(updateIsLoadingTasks({ payload: true }));
     this.dataService.getAllTasks(1, 10).subscribe({
       next: (res: any) => {
-        this.store.dispatch(updateTasksList({ data: res.tasks.reverse() }));
+        this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
+        this.store.dispatch(updateIsLoadingTasks({ payload: false }));
       },
       error: (error) => {
-        console.log('error==================================');
         console.log(error);
+        this.store.dispatch(updateIsLoadingTasks({ payload: false }));
       },
     });
   }
   getAllUsers() {
+    this.store.dispatch(updateIsLoadingUsers({ payload: true }));
     this.dataService.getAllUsers().subscribe({
       next: (res: any) => {
-        this.store.dispatch(updateUsers({ data: res.users.reverse() }));
+        this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
+        this.store.dispatch(updateIsLoadingUsers({ payload: false }));
       },
       error: (error) => {
-        console.log('error==================================');
         console.log(error);
+        this.store.dispatch(updateIsLoadingUsers({ payload: false }));
       },
     });
   }

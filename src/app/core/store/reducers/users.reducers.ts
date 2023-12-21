@@ -1,9 +1,17 @@
 import { createReducer, on } from '@ngrx/store';
-import { updateUsers } from '../actions/users.actions';
+import {
+  UsersPayload,
+  updateIsLoadingUsers,
+  updateUsers,
+} from '../actions/users.actions';
 
-export const initialState = [];
+export const initialState: UsersPayload = { isLoading: false, data: [] };
 
 export const usersReducer = createReducer(
   initialState,
-  on(updateUsers, (state, { data }) => data)
+  on(updateUsers, (state, { payload }) => ({ ...state, data: payload })),
+  on(updateIsLoadingUsers, (state, { payload }) => ({
+    ...state,
+    isLoading: payload,
+  }))
 );

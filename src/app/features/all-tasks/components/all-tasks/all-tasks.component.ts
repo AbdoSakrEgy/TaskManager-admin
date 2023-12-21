@@ -13,8 +13,9 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
-import { updateTasksList } from 'src/app/core/store/actions/tasks.actions';
+import { updateTasks } from 'src/app/core/store/actions/tasks.actions';
 import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTasks.selectors';
+import { selectIsLoadingTasks } from 'src/app/core/store/selectors/tasks.selectors';
 
 @Component({
   selector: 'app-all-tasks',
@@ -24,6 +25,12 @@ import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTa
 export class AllTasksComponent implements OnInit {
   tasksToView: any[] = [];
   firstRowPosition: number = 1;
+  isLoading = true;
+  isTasksLoading$ = this.store.select(selectIsLoadingTasks).subscribe({
+    next: (res: any) => {
+      this.isLoading = res;
+    },
+  });
   isTasksToViewUpdated$ = this.store.select(selectPaginationTasks).subscribe({
     next: (res: any) => {
       const firstRowPosition = res.tasksPerPage * (res.selectedPage - 1) + 1;
@@ -90,7 +97,7 @@ export class RemoveTaskConfirm {
         });
         this.dataService.getAllTasks(1, 10).subscribe({
           next: (res: any) => {
-            this.store.dispatch(updateTasksList({ data: res.tasks.reverse() }));
+            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
           },
           error: (error) => {
             console.log(error);

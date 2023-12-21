@@ -14,6 +14,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { updateUsers } from 'src/app/core/store/actions/users.actions';
+import { selectIsLoadingUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({
   selector: 'app-users',
@@ -23,6 +24,12 @@ import { updateUsers } from 'src/app/core/store/actions/users.actions';
 export class UsersComponent {
   usersToView: any[] = [];
   firstRowPosition: number = 1;
+  isLoading = true;
+  isUsersLoading$ = this.store.select(selectIsLoadingUsers).subscribe({
+    next: (res: any) => {
+      this.isLoading = res;
+    },
+  });
   isusersToViewUpdated$ = this.store.select(selectPaginationUsers).subscribe({
     next: (res: any) => {
       const firstRowPosition = res.usersPerPage * (res.selectedPage - 1) + 1;
@@ -83,7 +90,7 @@ export class RemoveTaskConfirm {
         });
         this.dataService.getAllUsers().subscribe({
           next: (res: any) => {
-            this.store.dispatch(updateUsers({ data: res.users.reverse() }));
+            this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
           },
         });
         this.dialogRef.close();
