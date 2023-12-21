@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { DataService } from '../../services/data.service';
+import { Store } from '@ngrx/store';
+import { updateTasksList } from '../../store/actions/tasks.actions';
+import { updateUsers } from '../../store/actions/users.actions';
+import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -49,7 +48,10 @@ export class RegisterComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private _snackBar: MatSnackBar,
+    private store: Store,
+    private dataService: DataService
   ) {}
   onRegister() {
     this.isLoading = true;
@@ -62,11 +64,31 @@ export class RegisterComponent {
     };
     this.authService.register(body).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.router.navigateByUrl('/all-tasks');
         this.tokenStorage.saveToken(res.token);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
+        this.dataService.getAllTasks(1, 10).subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateTasksList({ data: res.tasks.reverse() }));
+          },
+        });
+        this.dataService.getAllUsers().subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateUsers({ data: res.users.reverse() }));
+          },
+        });
+        this._snackBar.openFromComponent(AlertComponent, {
+          data: {
+            message: 'Logged in successfully',
+            backgroundColor: '#16a34a',
+            textColor: '#ffffff',
+            isCloseBtnHidden: true,
+          },
+          duration: 2 * 1000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+        });
       },
       error: (error) => {
         this.errorMessage = error;

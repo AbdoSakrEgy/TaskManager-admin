@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { Store } from '@ngrx/store';
 import { updateTasksList } from 'src/app/core/store/actions/tasks.actions';
+import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({
   selector: 'app-add-new-task',
@@ -20,7 +21,7 @@ export class AddNewTaskComponent implements OnInit {
     description: ['', Validators.required],
     deadline: ['', Validators.required],
   });
-  users: any[] = [];
+  users$ = this.store.select(selectUsers);
   isLoading: boolean = false;
   imageFile: File | null = null;
 
@@ -32,16 +33,7 @@ export class AddNewTaskComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private store: Store
   ) {}
-  ngOnInit(): void {
-    this.dataService.getAllUsers().subscribe({
-      next: (res: any) => {
-        this.users = res.users.reverse();
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
-  }
+  ngOnInit(): void {}
   onNoClick(): void {
     this.dialogRef.close();
   }

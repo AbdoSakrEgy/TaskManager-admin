@@ -5,6 +5,10 @@ import { AuthService } from '../../services/auth.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
+import { Store } from '@ngrx/store';
+import { updateTasksList } from '../../store/actions/tasks.actions';
+import { DataService } from '../../services/data.service';
+import { updateUsers } from '../../store/actions/users.actions';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +33,9 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private tokenStorageService: TokenStorageService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private store: Store,
+    private dataService: DataService
   ) {}
   ngOnInit(): void {
     if (this.tokenStorageService.getToken()) {
@@ -48,6 +54,16 @@ export class LoginComponent implements OnInit {
       next: (res: any) => {
         this.router.navigateByUrl('/all-tasks');
         this.tokenStorageService.saveToken(res.token);
+        this.dataService.getAllTasks(1, 10).subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateTasksList({ data: res.tasks.reverse() }));
+          },
+        });
+        this.dataService.getAllUsers().subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateUsers({ data: res.users.reverse() }));
+          },
+        });
         this._snackBar.openFromComponent(AlertComponent, {
           data: {
             message: 'Logged in successfully',
@@ -66,15 +82,4 @@ export class LoginComponent implements OnInit {
       },
     });
   }
-  // testAlert() {
-  //   this._snackBar.openFromComponent(AlertComponent, {
-  //     data: {
-  //       message: 'Logged In success!',
-  //       backgroundColor: '#16a34a',
-  //       textColor: '#ffffff',
-  //     },
-  //     horizontalPosition: 'end',
-  //     verticalPosition: 'top',
-  //   });
-  // }
 }

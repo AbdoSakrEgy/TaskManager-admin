@@ -11,11 +11,11 @@ import { AlertData } from 'src/app/core/models/alert';
   styleUrls: ['./alert.component.css'],
 })
 export class AlertComponent {
-  myData: AlertData;
+  alertData: AlertData;
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: AlertData,
     @Inject(MatSnackBarRef) public snackBarRef: any
   ) {
-    this.myData = data;
+    this.alertData = data;
   }
 }

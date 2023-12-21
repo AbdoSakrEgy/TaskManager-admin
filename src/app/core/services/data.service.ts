@@ -23,4 +23,7 @@ export class DataService {
   removeTask(taskId: any) {
     return this.http.delete(API_URL + '/tasks/delete-task/' + taskId);
   }
+  removeUser(userId: any) {
+    return this.http.delete(API_URL + '/auth/user/' + userId);
+  }
 }

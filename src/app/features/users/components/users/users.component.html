@@ -24,7 +24,7 @@
       <span class="w-[15%]">{{ user.status }}</span>
       <span class="w-[25%] flex gap-3">
         <span class="btn-update">Update</span>
-        <span class="btn-delete">Delete</span>
+        <span class="btn-delete" (click)="removeUserDialog(user._id)">Delete</span>
       </span>
     </div>
     <!-- if loading -->

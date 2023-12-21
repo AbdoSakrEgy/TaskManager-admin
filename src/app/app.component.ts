@@ -42,6 +42,7 @@ export class AppComponent {
         this.store.dispatch(updateTasksList({ data: res.tasks.reverse() }));
       },
       error: (error) => {
+        console.log('error==================================');
         console.log(error);
       },
     });
@@ -49,9 +50,10 @@ export class AppComponent {
   getAllUsers() {
     this.dataService.getAllUsers().subscribe({
       next: (res: any) => {
-        this.store.dispatch(updateUsers({ data: res.users }));
+        this.store.dispatch(updateUsers({ data: res.users.reverse() }));
       },
       error: (error) => {
+        console.log('error==================================');
         console.log(error);
       },
     });

@@ -1,12 +1,12 @@
 <main
   class="flex rounded-md bg-green-500 text-white"
-  [style.background-color]="myData.backgroundColor"
-  [style.color]="myData.textColor"
+  [style.background-color]="alertData.backgroundColor"
+  [style.color]="alertData.textColor"
 >
   <span class="example-pizza-party" matSnackBarLabel>
-    {{ myData.message }}
+    {{ alertData.message }}
   </span>
-  <span matSnackBarActions *ngIf="!myData.isCloseBtnHidden">
+  <span matSnackBarActions *ngIf="!alertData.isCloseBtnHidden">
     <button
       mat-button
       matSnackBarAction
