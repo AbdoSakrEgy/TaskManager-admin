@@ -15,12 +15,13 @@ import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
 })
 export class AddNewTaskComponent implements OnInit {
   newTaskForm = this.formBuilder.group({
-    title: ['', Validators.required],
+    title: ['', [Validators.required, Validators.minLength(5)]],
     userId: ['', Validators.required],
     image: ['', Validators.required],
     description: ['', Validators.required],
     deadline: ['', Validators.required],
   });
+  isImageRequired = false;
   isLoading: boolean = false;
   imageFile: File | null = null;
   users$ = this.store.select(selectUsers);
@@ -42,6 +43,14 @@ export class AddNewTaskComponent implements OnInit {
     const imageFile: File = event.target.files[0];
     if (imageFile) {
       this.imageFile = imageFile;
+    }
+    this.setIsImageRequired();
+  }
+  setIsImageRequired() {
+    if (this.newTaskForm.get('image')?.hasError('required')) {
+      this.isImageRequired = true;
+    } else {
+      this.isImageRequired = false;
     }
   }
   createTask() {
