@@ -14,7 +14,7 @@ import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
   styleUrls: ['./task-form.component.css'],
 })
 export class TaskFormComponent {
-  newTaskForm = this.formBuilder.group({
+  taskForm = this.formBuilder.group({
     title: [
       this.data.task ? this.data.task.title : '',
       [Validators.required, Validators.minLength(5)],
@@ -59,7 +59,7 @@ export class TaskFormComponent {
     this.dialogRef.close();
   }
   selectImage(event: any) {
-    this.newTaskForm.get('image')?.setValue(event.target.files[0]);
+    this.taskForm.get('image')?.setValue(event.target.files[0]);
     const imageFile: File = event.target.files[0];
     if (imageFile) {
       this.imageFile = imageFile;
@@ -67,7 +67,7 @@ export class TaskFormComponent {
     this.setIsImageRequired();
   }
   setIsImageRequired() {
-    if (this.newTaskForm.get('image')?.hasError('required')) {
+    if (this.taskForm.get('image')?.hasError('required')) {
       this.isImageRequired = true;
     } else {
       this.isImageRequired = false;
@@ -76,14 +76,14 @@ export class TaskFormComponent {
   createTask() {
     this.isLoading = true;
     const formData = new FormData();
-    formData.append('title', this.newTaskForm.get('title')?.value!);
-    formData.append('userId', this.newTaskForm.get('userId')?.value!);
-    formData.append('image', this.newTaskForm.get('image')?.value!);
-    formData.append('description', this.newTaskForm.get('description')?.value!);
-    formData.append('deadline', this.newTaskForm.get('deadline')?.value!);
+    formData.append('title', this.taskForm.get('title')?.value!);
+    formData.append('userId', this.taskForm.get('userId')?.value!);
+    formData.append('image', this.taskForm.get('image')?.value!);
+    formData.append('description', this.taskForm.get('description')?.value!);
+    formData.append('deadline', this.taskForm.get('deadline')?.value!);
     this.dataService.createTask(formData).subscribe({
       next: (res: any) => {
-        this.newTaskForm.reset();
+        this.taskForm.reset();
         this.imageFile = null;
         this.isLoading = false;
         this._snackBar.openFromComponent(AlertComponent, {
@@ -127,14 +127,14 @@ export class TaskFormComponent {
   updateTask() {
     this.isLoading = true;
     const formData = new FormData();
-    formData.append('title', this.newTaskForm.get('title')?.value!);
-    formData.append('userId', this.newTaskForm.get('userId')?.value!);
-    formData.append('image', this.newTaskForm.get('image')?.value!);
-    formData.append('description', this.newTaskForm.get('description')?.value!);
-    formData.append('deadline', this.newTaskForm.get('deadline')?.value!);
+    formData.append('title', this.taskForm.get('title')?.value!);
+    formData.append('userId', this.taskForm.get('userId')?.value!);
+    formData.append('image', this.taskForm.get('image')?.value!);
+    formData.append('description', this.taskForm.get('description')?.value!);
+    formData.append('deadline', this.taskForm.get('deadline')?.value!);
     this.dataService.updateTask(this.data.task._id, formData).subscribe({
       next: (res: any) => {
-        this.newTaskForm.reset();
+        this.taskForm.reset();
         this.imageFile = null;
         this.isLoading = false;
         this._snackBar.openFromComponent(AlertComponent, {

@@ -11,22 +11,21 @@
     >
       <span class="w-[5%]">No.</span>
       <span class="w-[15%]">Name</span>
-      <span class="w-[20%]">Email</span>
+      <span class="w-[25%]">Email</span>
       <span class="w-[20%]">Assigned Tasks</span>
-      <span class="w-[15%]">Status</span>
-      <span class="w-[25%]"></span>
+      <span class="w-[20%]">Status</span>
+      <span class="w-[15%]"></span>
     </div>
     <div class="row-style" *ngFor="let user of usersToView; index as index">
       <span class="w-[5%]">{{ firstRowPosition + index }}</span>
       <span class="w-[15%]">{{ user.username }}</span>
-      <span class="w-[20%]">{{ user.email }}</span>
+      <span class="w-[25%]">{{ user.email }}</span>
       <span class="w-[20%] text-center">{{ user.assignedTasks }}</span>
-      <span class="w-[15%]">{{ user.status }}</span>
-      <span class="w-[25%] flex gap-3">
-        <span class="btn-update">Update</span>
-        <span class="btn-delete" (click)="removeUserDialog(user._id)"
-          >Delete</span
-        >
+      <span class="w-[20%]">{{ user.status }}</span>
+      <span class="w-[15%] flex gap-3">
+        <span class="btn-delete" (click)="removeUserDialog(user._id)">
+          Delete
+        </span>
       </span>
     </div>
     <!-- if loading -->
