@@ -4,7 +4,7 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { AddNewTaskComponent } from '../add-new-task/add-new-task.component';
+import { TaskFormComponent } from '../task-form/task-form.component';
 import { DataService } from 'src/app/core/services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
@@ -18,11 +18,11 @@ import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTa
 import { selectIsLoadingTasks } from 'src/app/core/store/selectors/tasks.selectors';
 
 @Component({
-  selector: 'app-all-tasks',
-  templateUrl: './all-tasks.component.html',
-  styleUrls: ['./all-tasks.component.css'],
+  selector: 'app-task-list',
+  templateUrl: './task-list.component.html',
+  styleUrls: ['./task-list.component.css'],
 })
-export class AllTasksComponent implements OnInit {
+export class TaskListComponent {
   tasksToView: any[] = [];
   firstRowPosition: number = 1;
   isLoading = true;
@@ -40,12 +40,25 @@ export class AllTasksComponent implements OnInit {
   });
 
   constructor(public dialog: MatDialog, private store: Store) {}
+  ngOnInit(): void {}
   createTaskDialog(): void {
-    const dialogRef = this.dialog.open(AddNewTaskComponent, {
+    const dialogRef = this.dialog.open(TaskFormComponent, {
       width: '1000px',
+      data: {
+        isDialogForUpdateTask: false,
+        task: '',
+      },
     });
   }
-  ngOnInit(): void {}
+  updateTaskDialog(task: any): void {
+    const dialogRef = this.dialog.open(TaskFormComponent, {
+      width: '1000px',
+      data: {
+        isDialogForUpdateTask: true,
+        task: task,
+      },
+    });
+  }
   removeTaskDialog(taskId: any): void {
     const dialogRef = this.dialog.open(RemoveTaskConfirm, {
       data: { taskId: taskId },

@@ -5,11 +5,11 @@ import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTa
 import { selectTasks } from 'src/app/core/store/selectors/tasks.selectors';
 
 @Component({
-  selector: 'app-paginator-of-all-tasks',
-  templateUrl: './paginator-of-all-tasks.component.html',
-  styleUrls: ['./paginator-of-all-tasks.component.css'],
+  selector: 'app-task-list-paginator',
+  templateUrl: './task-list-paginator.component.html',
+  styleUrls: ['./task-list-paginator.component.css'],
 })
-export class PaginatorOfAllTasksComponent implements OnInit {
+export class TaskListPaginatorComponent {
   mainData: any[] = [];
   tasks: any[] = [];
   tasksPerPage = 4;

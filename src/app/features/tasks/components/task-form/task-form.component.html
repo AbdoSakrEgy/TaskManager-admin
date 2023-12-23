@@ -1,7 +1,12 @@
 <main class="flex flex-col gap-5 p-5">
   <!-- header -->
   <div class="flex justify-between items-center">
-    <span class="text-3xl font-bold">Add new task</span>
+    <span class="text-3xl font-bold" *ngIf="!data.isDialogForUpdateTask">
+      Add new task
+    </span>
+    <span class="text-3xl font-bold" *ngIf="data.isDialogForUpdateTask">
+      Update the task
+    </span>
     <div class="example-button-container">
       <button
         mat-mini-fab
@@ -19,6 +24,7 @@
     enctype="multipart/form-data"
     class="flex flex-col"
   >
+    <!-- add title -->
     <mat-form-field>
       <mat-label>Title</mat-label>
       <input matInput formControlName="title" />
@@ -29,7 +35,7 @@
         Title should be greater than 4 characters
       </mat-error>
     </mat-form-field>
-
+    <!-- add user -->
     <mat-form-field>
       <mat-label>Users</mat-label>
       <mat-select formControlName="userId">
@@ -41,7 +47,7 @@
         User is required
       </mat-error>
     </mat-form-field>
-
+    <!-- add image -->
     <div class="flex flex-col mb-3">
       <div class="flex justify-start items-center gap-3">
         <label for="selectFile" class="btn-selectFile">Add image*</label>
@@ -53,12 +59,19 @@
           (change)="selectImage($event)"
           (click)="setIsImageRequired()"
         />
+        <span *ngIf="data.isDialogForUpdateTask">
+          <img
+            [src]="'https://crud-5swn.onrender.com/' + data.task.image"
+            alt="img"
+            class="w-20"
+          />
+        </span>
       </div>
       <p *ngIf="isImageRequired" class="px-[16px] pt-1 text-xs text-[#f54d41]">
         Image is required
       </p>
     </div>
-
+    <!-- add date -->
     <mat-form-field>
       <mat-label>Choose a date</mat-label>
       <input matInput formControlName="deadline" [matDatepicker]="picker" />
@@ -71,7 +84,7 @@
         Date is required
       </mat-error>
     </mat-form-field>
-
+    <!-- add description -->
     <mat-form-field>
       <mat-label>Description</mat-label>
       <textarea
@@ -87,6 +100,7 @@
   <!-- footer -->
   <div class="flex justify-center gap-3">
     <button
+      *ngIf="!data.isDialogForUpdateTask"
       (click)="createTask()"
       [disabled]="newTaskForm.invalid || isLoading"
       [class]="{
@@ -95,6 +109,18 @@
       }"
     >
       <span *ngIf="!isLoading">Create</span>
+      <span *ngIf="isLoading">Loading...</span>
+    </button>
+    <button
+      *ngIf="data.isDialogForUpdateTask"
+      (click)="updateTask()"
+      [disabled]="newTaskForm.invalid || isLoading"
+      [class]="{
+        'btn-create-active': newTaskForm.valid && !isLoading,
+        'btn-create-inactive': !newTaskForm.valid || isLoading
+      }"
+    >
+      <span *ngIf="!isLoading">Update</span>
       <span *ngIf="isLoading">Loading...</span>
     </button>
     <button class="btn-close" (click)="onNoClick()">Close</button>

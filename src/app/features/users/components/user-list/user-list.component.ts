@@ -17,11 +17,11 @@ import { updateUsers } from 'src/app/core/store/actions/users.actions';
 import { selectIsLoadingUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css'],
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.css'],
 })
-export class UsersComponent {
+export class UserListComponent {
   usersToView: any[] = [];
   firstRowPosition: number = 1;
   isLoading = true;

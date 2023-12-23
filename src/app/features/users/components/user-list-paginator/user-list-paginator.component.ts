@@ -5,11 +5,11 @@ import { selectPaginationUsers } from 'src/app/core/store/selectors/paginationUs
 import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({
-  selector: 'app-paginator-of-users',
-  templateUrl: './paginator-of-users.component.html',
-  styleUrls: ['./paginator-of-users.component.css'],
+  selector: 'app-user-list-paginator',
+  templateUrl: './user-list-paginator.component.html',
+  styleUrls: ['./user-list-paginator.component.css'],
 })
-export class PaginatorOfUsersComponent {
+export class UserListPaginatorComponent {
   usersList = [];
   users: any[] = [];
   usersPerPage = 4;

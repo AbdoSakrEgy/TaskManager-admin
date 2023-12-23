@@ -9,17 +9,37 @@ import { updateTasks } from 'src/app/core/store/actions/tasks.actions';
 import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({
-  selector: 'app-add-new-task',
-  templateUrl: './add-new-task.component.html',
-  styleUrls: ['./add-new-task.component.css'],
+  selector: 'app-task-form',
+  templateUrl: './task-form.component.html',
+  styleUrls: ['./task-form.component.css'],
 })
-export class AddNewTaskComponent implements OnInit {
+export class TaskFormComponent {
   newTaskForm = this.formBuilder.group({
-    title: ['', [Validators.required, Validators.minLength(5)]],
-    userId: ['', Validators.required],
-    image: ['', Validators.required],
-    description: ['', Validators.required],
-    deadline: ['', Validators.required],
+    title: [
+      this.data.task ? this.data.task.title : '',
+      [Validators.required, Validators.minLength(5)],
+    ],
+    userId: [
+      this.data.task ? this.data.task.userId._id : '',
+      Validators.required,
+    ],
+    image: [this.data.task ? this.data.task.image : '', Validators.required],
+    description: [
+      this.data.task ? this.data.task.description : '',
+      Validators.required,
+    ],
+    deadline: [
+      this.data.task
+        ? new Date(
+            new Date(this.data.task.deadline).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+            } as Intl.DateTimeFormatOptions)
+          ).toISOString()
+        : '',
+      Validators.required,
+    ],
   });
   isImageRequired = false;
   isLoading: boolean = false;
@@ -27,7 +47,7 @@ export class AddNewTaskComponent implements OnInit {
   users$ = this.store.select(selectUsers);
 
   constructor(
-    public dialogRef: MatDialogRef<AddNewTaskComponent>,
+    public dialogRef: MatDialogRef<TaskFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private dataService: DataService,
@@ -58,7 +78,7 @@ export class AddNewTaskComponent implements OnInit {
     const formData = new FormData();
     formData.append('title', this.newTaskForm.get('title')?.value!);
     formData.append('userId', this.newTaskForm.get('userId')?.value!);
-    formData.append('image', this.imageFile!);
+    formData.append('image', this.newTaskForm.get('image')?.value!);
     formData.append('description', this.newTaskForm.get('description')?.value!);
     formData.append('deadline', this.newTaskForm.get('deadline')?.value!);
     this.dataService.createTask(formData).subscribe({
@@ -88,6 +108,57 @@ export class AddNewTaskComponent implements OnInit {
         });
       },
       error: (error) => {
+        console.log(error);
+        this.isLoading = false;
+        this._snackBar.openFromComponent(AlertComponent, {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          duration: 4000,
+          data: {
+            message: 'Error!',
+            backgroundColor: '#df1e1e',
+            textColor: '#ffffff',
+            isCloseBtnHidden: false,
+          },
+        });
+      },
+    });
+  }
+  updateTask() {
+    this.isLoading = true;
+    const formData = new FormData();
+    formData.append('title', this.newTaskForm.get('title')?.value!);
+    formData.append('userId', this.newTaskForm.get('userId')?.value!);
+    formData.append('image', this.newTaskForm.get('image')?.value!);
+    formData.append('description', this.newTaskForm.get('description')?.value!);
+    formData.append('deadline', this.newTaskForm.get('deadline')?.value!);
+    this.dataService.updateTask(this.data.task._id, formData).subscribe({
+      next: (res: any) => {
+        this.newTaskForm.reset();
+        this.imageFile = null;
+        this.isLoading = false;
+        this._snackBar.openFromComponent(AlertComponent, {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          duration: 4000,
+          data: {
+            message: 'Task updated successfully',
+            backgroundColor: '#16a34a',
+            textColor: '#ffffff',
+            isCloseBtnHidden: false,
+          },
+        });
+        this.dialogRef.close();
+        this.dataService.getAllTasks(1, 10).subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
+      },
+      error: (error: any) => {
         console.log(error);
         this.isLoading = false;
         this._snackBar.openFromComponent(AlertComponent, {

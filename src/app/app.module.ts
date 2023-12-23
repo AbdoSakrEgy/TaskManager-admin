@@ -9,7 +9,6 @@ import { RegisterComponent } from './core/components/register/register.component
 import { NavbarComponent } from './core/components/navbar/navbar.component';
 import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
 import { SharedModule } from './shared/shared.module';
-import { AllTasksModule } from './features/all-tasks/all-tasks.module';
 import { UsersModule } from './features/users/users.module';
 import { httpInterceptorProviders } from './core/interceptors';
 import { StoreModule } from '@ngrx/store';
@@ -17,6 +16,7 @@ import { tasksReducer } from './core/store/reducers/tasks.reducers';
 import { paginationTasksReducer } from './core/store/reducers/paginationTasks.reducers';
 import { usersReducer } from './core/store/reducers/users.reducers';
 import { paginationUsersReducer } from './core/store/reducers/paginationUsers.reducers';
+import { TasksModule } from './features/tasks/tasks.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,7 @@ import { paginationUsersReducer } from './core/store/reducers/paginationUsers.re
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
-    AllTasksModule,
+    TasksModule,
     UsersModule,
     StoreModule.forRoot({
       tasks: tasksReducer,
