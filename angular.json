@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "TasksApp-admin:build:production"
+              "buildTarget": "TasksApp-admin:build:production"
             },
             "development": {
-              "browserTarget": "TasksApp-admin:build:development"
+              "buildTarget": "TasksApp-admin:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "TasksApp-admin:build"
+            "buildTarget": "TasksApp-admin:build"
           }
         },
         "test": {
