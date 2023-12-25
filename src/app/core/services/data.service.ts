@@ -8,11 +8,26 @@ const API_URL = 'https://crud-5swn.onrender.com';
 })
 export class DataService {
   constructor(private http: HttpClient) {}
-  getAllTasks(page: number, limit: number) {
+  getAllTasks(
+    page = '',
+    limit = '',
+    status = '',
+    fromDate = '',
+    toDate = '',
+    userId = '',
+    keyword = ''
+  ) {
     const httpOptions = {
-      params: new HttpParams().set('page', page).set('limit', limit),
+      params: new HttpParams()
+        .set('page', page)
+        .set('limit', limit)
+        .set('status', status)
+        .set('fromDate', fromDate)
+        .set('toDate', toDate)
+        .set('userId', userId)
+        .set('keyword', keyword),
     };
-    return this.http.get(API_URL + '/tasks/all-tasks');
+    return this.http.get(API_URL + '/tasks/all-tasks', httpOptions);
   }
   createTask(body: any) {
     return this.http.post(API_URL + '/tasks/add-task', body);
@@ -23,8 +38,11 @@ export class DataService {
   removeTask(taskId: any) {
     return this.http.delete(API_URL + '/tasks/delete-task/' + taskId);
   }
-  getAllUsers() {
-    return this.http.get(API_URL + '/auth/users');
+  getAllUsers(name = '') {
+    const httpOptions = {
+      params: new HttpParams().set('name', name),
+    };
+    return this.http.get(API_URL + '/auth/users', httpOptions);
   }
   removeUser(userId: any) {
     return this.http.delete(API_URL + '/auth/user/' + userId);

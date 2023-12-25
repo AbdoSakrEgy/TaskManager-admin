@@ -11,37 +11,55 @@
     <!-- search -->
     <mat-form-field>
       <mat-label>Search</mat-label>
-      <input matInput />
+      <input matInput [(ngModel)]="keyword" (keyup)="getAllTasks()" />
     </mat-form-field>
     <!-- by user -->
     <mat-form-field>
       <mat-label>By user</mat-label>
-      <mat-select>
-        <mat-option value="one">First option</mat-option>
-        <mat-option value="two">Second option</mat-option>
+      <mat-select [(value)]="userId" (valueChange)="getAllTasks()">
+        <mat-option value="">All</mat-option>
+        <mat-option [value]="user._id" *ngFor="let user of users$ | async">
+          {{ user.username }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
     <!-- status -->
     <mat-form-field>
       <mat-label>Status</mat-label>
-      <mat-select>
-        <mat-option value="one">First option</mat-option>
-        <mat-option value="two">Second option</mat-option>
+      <mat-select [(value)]="status" (valueChange)="getAllTasks()">
+        <mat-option value="">All</mat-option>
+        <mat-option value="In-Progress">In-Progress</mat-option>
+        <mat-option value="Complete">Complete</mat-option>
+        <mat-option value="Canceled">Canceled</mat-option>
       </mat-select>
     </mat-form-field>
     <!-- date range -->
-    <mat-form-field>
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate placeholder="Start date" />
-        <input matEndDate placeholder="End date" />
-      </mat-date-range-input>
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="picker"
-      ></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
+    <div>
+      <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
+          <input
+            matStartDate
+            placeholder="Start date"
+            formControlName="start"
+          />
+          <input
+            matEndDate
+            placeholder="End date"
+            formControlName="end"
+            (dateChange)="getAllTasks()"
+          />
+        </mat-date-range-input>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+      <button mat-icon-button (click)="resetDate()" class="">
+        <mat-icon>autorenew</mat-icon>
+      </button>
+    </div>
   </div>
   <!-- table -->
   <div class="table-container">
@@ -79,7 +97,7 @@
     </div>
   </div>
   <!-- if loading -->
-  <div class="text-center py-3" *ngIf="isLoading">
+  <div class="text-center" *ngIf="isLoading">
     <app-spinner1></app-spinner1>
   </div>
   <!-- if no data -->

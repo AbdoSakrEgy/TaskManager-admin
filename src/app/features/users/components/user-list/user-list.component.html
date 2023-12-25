@@ -1,7 +1,7 @@
 <main class="px-10 mt-5">
   <mat-form-field>
     <mat-label>search</mat-label>
-    <input matInput />
+    <input matInput [(ngModel)]="name" (keyup)="getAllUsers()" />
   </mat-form-field>
   <!-- table -->
   <div class="table-container">
@@ -28,17 +28,17 @@
         </span>
       </span>
     </div>
-    <!-- if loading -->
-    <div class="text-center py-3" *ngIf="isLoading">
-      <app-spinner1></app-spinner1>
-    </div>
-    <!-- if no data -->
-    <div
-      class="text-center py-3 text-[#b1b0b2]"
-      *ngIf="!isLoading && usersToView.length === 0"
-    >
-      No data
-    </div>
+  </div>
+  <!-- if loading -->
+  <div class="text-center" *ngIf="isLoading">
+    <app-spinner1></app-spinner1>
+  </div>
+  <!-- if no data -->
+  <div
+    class="text-center py-3 text-[#b1b0b2]"
+    *ngIf="!isLoading && usersToView.length === 0"
+  >
+    No data
   </div>
   <!-- paginator of table -->
   <app-user-list-paginator></app-user-list-paginator>

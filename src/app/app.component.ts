@@ -44,7 +44,7 @@ export class AppComponent {
   }
   getAllTasks() {
     this.store.dispatch(updateIsLoadingTasks({ payload: true }));
-    this.dataService.getAllTasks(1, 10).subscribe({
+    this.dataService.getAllTasks().subscribe({
       next: (res: any) => {
         this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
         this.store.dispatch(updateIsLoadingTasks({ payload: false }));

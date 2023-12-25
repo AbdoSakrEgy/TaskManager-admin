@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     if (this.tokenStorageService.getToken()) {
-      this.router.navigateByUrl('/all-tasks');
+      this.router.navigateByUrl('/tasks');
     }
   }
   onLogin() {
@@ -52,9 +52,9 @@ export class LoginComponent implements OnInit {
     };
     this.authService.login(MODEL).subscribe({
       next: (res: any) => {
-        this.router.navigateByUrl('/all-tasks');
+        this.router.navigateByUrl('/tasks');
         this.tokenStorageService.saveToken(res.token);
-        this.dataService.getAllTasks(1, 10).subscribe({
+        this.dataService.getAllTasks().subscribe({
           next: (res: any) => {
             this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
           },

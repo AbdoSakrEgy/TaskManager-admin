@@ -10,22 +10,38 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
-import { updateTasks } from 'src/app/core/store/actions/tasks.actions';
+import {
+  updateIsLoadingTasks,
+  updateTasks,
+} from 'src/app/core/store/actions/tasks.actions';
 import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTasks.selectors';
 import { selectIsLoadingTasks } from 'src/app/core/store/selectors/tasks.selectors';
+import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css'],
 })
-export class TaskListComponent {
+export class TaskListComponent implements OnInit {
   tasksToView: any[] = [];
   firstRowPosition: number = 1;
   isLoading = true;
+  page = '';
+  limit = '';
+  status = '';
+  fromDate = '';
+  toDate = '';
+  range = new FormGroup({
+    start: new FormControl<Date | ''>(''),
+    end: new FormControl<Date | ''>(''),
+  });
+  userId = '';
+  keyword = '';
+
   isTasksLoading$ = this.store.select(selectIsLoadingTasks).subscribe({
     next: (res: any) => {
       this.isLoading = res;
@@ -38,9 +54,16 @@ export class TaskListComponent {
       this.tasksToView = res.tasks;
     },
   });
+  users$ = this.store.select(selectUsers);
 
-  constructor(public dialog: MatDialog, private store: Store) {}
-  ngOnInit(): void {}
+  constructor(
+    public dialog: MatDialog,
+    private store: Store,
+    private dataService: DataService
+  ) {}
+  ngOnInit(): void {
+    this.getAllTasks();
+  }
   createTaskDialog(): void {
     const dialogRef = this.dialog.open(TaskFormComponent, {
       width: '1000px',
@@ -63,6 +86,56 @@ export class TaskListComponent {
     const dialogRef = this.dialog.open(RemoveTaskConfirm, {
       data: { taskId: taskId },
     });
+  }
+  setDate() {
+    const startDate = new Date(this.range.get('start')?.value!);
+    const endDate = new Date(this.range.get('end')?.value!);
+    this.fromDate =
+      startDate.getFullYear() +
+      '-' +
+      (startDate.getMonth() + 1) +
+      '-' +
+      startDate.getDate();
+    this.toDate =
+      endDate.getFullYear() +
+      '-' +
+      (endDate.getMonth() + 1) +
+      '-' +
+      endDate.getDate();
+  }
+  resetDate() {
+    this.range.reset();
+    this.fromDate = '';
+    this.toDate = '';
+    this.range.get('start')?.markAsPristine();
+    this.range.get('end')?.markAsPristine();
+    this.getAllTasks();
+  }
+  getAllTasks() {
+    if (this.range.dirty) {
+      this.setDate();
+    }
+    this.store.dispatch(updateIsLoadingTasks({ payload: true }));
+    this.dataService
+      .getAllTasks(
+        this.page,
+        this.limit,
+        this.status,
+        this.fromDate,
+        this.toDate,
+        this.userId,
+        this.keyword
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
+          this.store.dispatch(updateIsLoadingTasks({ payload: false }));
+        },
+        error: (error) => {
+          console.log(error);
+          this.store.dispatch(updateIsLoadingTasks({ payload: false }));
+        },
+      });
   }
 }
 
@@ -108,7 +181,7 @@ export class RemoveTaskConfirm {
             isCloseBtnHidden: false,
           },
         });
-        this.dataService.getAllTasks(1, 10).subscribe({
+        this.dataService.getAllTasks().subscribe({
           next: (res: any) => {
             this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
           },

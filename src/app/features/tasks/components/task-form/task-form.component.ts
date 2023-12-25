@@ -98,7 +98,7 @@ export class TaskFormComponent {
           },
         });
         this.dialogRef.close();
-        this.dataService.getAllTasks(1, 10).subscribe({
+        this.dataService.getAllTasks().subscribe({
           next: (res: any) => {
             this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
           },
@@ -149,7 +149,7 @@ export class TaskFormComponent {
           },
         });
         this.dialogRef.close();
-        this.dataService.getAllTasks(1, 10).subscribe({
+        this.dataService.getAllTasks().subscribe({
           next: (res: any) => {
             this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
           },

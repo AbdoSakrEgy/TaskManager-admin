@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,7 +13,10 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
-import { updateUsers } from 'src/app/core/store/actions/users.actions';
+import {
+  updateIsLoadingUsers,
+  updateUsers,
+} from 'src/app/core/store/actions/users.actions';
 import { selectIsLoadingUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({
@@ -21,10 +24,11 @@ import { selectIsLoadingUsers } from 'src/app/core/store/selectors/users.selecto
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
   usersToView: any[] = [];
   firstRowPosition: number = 1;
   isLoading = true;
+  name = '';
   isUsersLoading$ = this.store.select(selectIsLoadingUsers).subscribe({
     next: (res: any) => {
       this.isLoading = res;
@@ -38,10 +42,30 @@ export class UserListComponent {
     },
   });
 
-  constructor(private store: Store, public dialog: MatDialog) {}
+  constructor(
+    private store: Store,
+    public dialog: MatDialog,
+    private dataService: DataService
+  ) {}
+  ngOnInit(): void {
+    this.getAllUsers();
+  }
   removeUserDialog(userId: any) {
     const dialogRef = this.dialog.open(RemoveTaskConfirm, {
       data: { userId: userId },
+    });
+  }
+  getAllUsers() {
+    this.store.dispatch(updateIsLoadingUsers({ payload: true }));
+    this.dataService.getAllUsers(this.name).subscribe({
+      next: (res: any) => {
+        this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
+        this.store.dispatch(updateIsLoadingUsers({ payload: false }));
+      },
+      error: (error) => {
+        console.log(error);
+        this.store.dispatch(updateIsLoadingUsers({ payload: false }));
+      },
     });
   }
 }

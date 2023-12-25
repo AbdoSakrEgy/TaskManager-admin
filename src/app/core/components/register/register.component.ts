@@ -64,11 +64,11 @@ export class RegisterComponent {
     };
     this.authService.register(body).subscribe({
       next: (res: any) => {
-        this.router.navigateByUrl('/all-tasks');
+        this.router.navigateByUrl('/tasks');
         this.tokenStorage.saveToken(res.token);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
-        this.dataService.getAllTasks(1, 10).subscribe({
+        this.dataService.getAllTasks().subscribe({
           next: (res: any) => {
             this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
           },

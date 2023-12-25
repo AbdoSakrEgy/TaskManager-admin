@@ -9,7 +9,7 @@ import { UserListComponent } from './features/users/components/user-list/user-li
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'all-tasks', component: TaskListComponent },
+  { path: 'tasks', component: TaskListComponent },
   { path: 'users', component: UserListComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
