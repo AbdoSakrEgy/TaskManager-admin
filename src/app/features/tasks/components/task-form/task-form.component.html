@@ -2,10 +2,10 @@
   <!-- header -->
   <div class="flex justify-between items-center">
     <span class="text-3xl font-bold" *ngIf="!data.isDialogForUpdateTask">
-      Add new task
+      {{ "taskForm.addTask" | translate }}
     </span>
     <span class="text-3xl font-bold" *ngIf="data.isDialogForUpdateTask">
-      Update the task
+      {{ "taskForm.updateTask" | translate }}
     </span>
     <div class="example-button-container">
       <button
@@ -26,7 +26,7 @@
   >
     <!-- add title -->
     <mat-form-field>
-      <mat-label>Title</mat-label>
+      <mat-label>{{ "tasks.title" | translate }}</mat-label>
       <input matInput formControlName="title" />
       @if(taskForm.get('title')?.hasError('required')){
       <mat-error>Title is required</mat-error>
@@ -37,7 +37,7 @@
     </mat-form-field>
     <!-- add user -->
     <mat-form-field>
-      <mat-label>Users</mat-label>
+      <mat-label>{{ "users.users" | translate }}</mat-label>
       <mat-select formControlName="userId">
         <mat-option [value]="user._id" *ngFor="let user of users$ | async">
           {{ user.username }}
@@ -50,7 +50,9 @@
     <!-- add image -->
     <div class="flex flex-col mb-3">
       <div class="flex justify-start items-center gap-3">
-        <label for="selectFile" class="btn-selectFile">Add image*</label>
+        <label for="selectFile" class="btn-selectFile">
+          {{ "buttons.addImage" | translate }}*
+        </label>
         <span>{{ imageFile?.name }}</span>
         <input
           type="file"
@@ -73,7 +75,7 @@
     </div>
     <!-- add date -->
     <mat-form-field>
-      <mat-label>Choose a date</mat-label>
+      <mat-label>{{ "tasks.dateRange" | translate }}</mat-label>
       <input matInput formControlName="deadline" [matDatepicker]="picker" />
       <mat-datepicker-toggle
         matIconSuffix
@@ -86,7 +88,7 @@
     </mat-form-field>
     <!-- add description -->
     <mat-form-field>
-      <mat-label>Description</mat-label>
+      <mat-label>{{ "taskForm.description" | translate }}</mat-label>
       <textarea
         matInput
         style="height: 200px"
@@ -108,8 +110,8 @@
         'btn-create-inactive': !taskForm.valid || isLoading
       }"
     >
-      <span *ngIf="!isLoading">Create</span>
-      <span *ngIf="isLoading">Loading...</span>
+      <span *ngIf="!isLoading">{{ "buttons.create" | translate }}</span>
+      <span *ngIf="isLoading">{{ "common.loading" | translate }}...</span>
     </button>
     <button
       *ngIf="data.isDialogForUpdateTask"
@@ -120,9 +122,11 @@
         'btn-create-inactive': !taskForm.valid || isLoading
       }"
     >
-      <span *ngIf="!isLoading">Update</span>
-      <span *ngIf="isLoading">Loading...</span>
+      <span *ngIf="!isLoading">{{ "buttons.update" | translate }}</span>
+      <span *ngIf="isLoading">{{ "common.loading" | translate }}...</span>
     </button>
-    <button class="btn-close" (click)="onNoClick()">Close</button>
+    <button class="btn-close" (click)="onNoClick()">
+      {{ "buttons.close" | translate }}
+    </button>
   </div>
 </main>

@@ -20,6 +20,8 @@ import {
 import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTasks.selectors';
 import { selectIsLoadingTasks } from 'src/app/core/store/selectors/tasks.selectors';
 import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
+import { TranslateService } from '@ngx-translate/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-task-list',
@@ -144,17 +146,27 @@ export class TaskListComponent implements OnInit {
   selector: 'remove-task-confirm',
   template: `
     <main class="p-5">
-      <div class="text-lg mb-5">Do you want to remove the task?</div>
+      <div class="text-lg mb-5">
+        {{ 'tasks.removeTaskMessage' | translate }}
+      </div>
       <div class="flex justify-start gap-5">
-        <button mat-stroked-button (click)="onNoClick()">Cancle</button>
+        <button mat-stroked-button (click)="onNoClick()">
+          {{ 'buttons.cancle' | translate }}
+        </button>
         <button mat-raised-button color="warn" (click)="removeTask()">
-          Delete
+          {{ 'buttons.delete' | translate }}
         </button>
       </div>
     </main>
   `,
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule],
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    SharedModule,
+  ],
 })
 export class RemoveTaskConfirm {
   constructor(

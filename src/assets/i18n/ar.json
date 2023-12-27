@@ -1,0 +1,41 @@
+{
+  "common": {
+    "noData": "لا توجد بيانات",
+    "loading": "تحميل",
+    "search": "بحث",
+    "status": "الحالة",
+    "position": "الترقيم"
+  },
+  "register": {},
+  "login": {},
+  "tasks": {
+    "tasks": "المهام",
+    "dateRange": "حدد الفترة الزمنية",
+    "title": "المهمة",
+    "deadLine": "موعد التسليم",
+    "removeTaskMessage": "هل تريد حذف المهمة؟"
+  },
+  "taskForm": {
+    "addTask": "إضافة مهمة جديدة",
+    "updateTask": "تحديث المهمة",
+    "description": "الوصف"
+  },
+  "users": {
+    "users": "المستخدمين",
+    "user": "المستخدم",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "assignedTasks": "المهام المطلوبة",
+    "removeTaskMessage": "هل تريد حذف المستخدم؟"
+  },
+  "buttons": {
+    "addTask": "إضافة مهمة",
+    "update": "تحديث",
+    "delete": "حذف",
+    "create": "إنشاء",
+    "close": "إغلاق",
+    "cancle": "إلغاء",
+    "addImage": "إضافة صورة",
+    "logout": "تسجيل الخروج"
+  }
+}

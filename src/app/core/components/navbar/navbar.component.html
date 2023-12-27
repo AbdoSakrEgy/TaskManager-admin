@@ -1,29 +1,45 @@
 <main class="flex justify-start items-center gap-5 bg-[#cb075a] px-10 py-2">
-  <span class="text-[#f7d034] text-2xl font-semibold hover:cursor-pointer">
+  <div class="text-[#f7d034] text-2xl font-semibold hover:cursor-pointer">
     Tasks
-  </span>
-  <span class="flex justify-between items-center w-full">
-    <span>
+  </div>
+  <div class="flex justify-between items-center w-full">
+    <span class="flex">
       <a
         routerLink="/tasks"
         routerLinkActive="active"
-        class="text-white p-2 rounded-md"
+        class="text-white p-2 rounded-md hover:bg-[#9303445d]"
       >
-        tasks
+        {{ "tasks.tasks" | translate }}
       </a>
       <a
         routerLink="/users"
         routerLinkActive="active"
-        class="text-white p-2 rounded-md"
+        class="text-white p-2 rounded-md hover:bg-[#9303445d]"
       >
-        users
+        {{ "users.users" | translate }}
       </a>
     </span>
-    <a
-      (click)="onLogout()"
-      class="text-white p-2 rounded-md hover:cursor-pointer"
-    >
-      Logout
-    </a>
-  </span>
+    <span class="flex justify-between gap-5 text-white">
+      <button
+        (click)="useLanguage()"
+        class="w-10 p-2 rounded-md hover:cursor-pointer hover:bg-[#9303445d]"
+        *ngIf="currentLang === 'en'"
+      >
+        ع
+      </button>
+      <button
+        (click)="useLanguage()"
+        class="w-10 p-2 rounded-md hover:cursor-pointer hover:bg-[#9303445d]"
+        *ngIf="currentLang === 'ar'"
+      >
+        EN
+      </button>
+      <a
+        (click)="onLogout()"
+        class="p-2 rounded-md hover:cursor-pointer hover:bg-[#9303445d]"
+      >
+        {{ "buttons.logout" | translate }}
+      </a>
+    </span>
+  </div>
 </main>

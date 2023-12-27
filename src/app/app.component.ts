@@ -10,6 +10,7 @@ import {
   updateIsLoadingTasks,
   updateTasks,
 } from './core/store/actions/tasks.actions';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -23,8 +24,12 @@ export class AppComponent {
   constructor(
     private route: Router,
     private dataService: DataService,
-    private store: Store
-  ) {}
+    private store: Store,
+    private translate: TranslateService
+  ) {
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
+  }
   ngOnInit(): void {
     this.route.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {

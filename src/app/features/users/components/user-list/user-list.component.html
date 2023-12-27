@@ -1,6 +1,6 @@
 <main class="px-10 mt-5">
   <mat-form-field>
-    <mat-label>search</mat-label>
+    <mat-label>{{ "common.search" | translate }}</mat-label>
     <input matInput [(ngModel)]="name" (keyup)="getAllUsers()" />
   </mat-form-field>
   <!-- table -->
@@ -9,22 +9,26 @@
     <div
       class="flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white"
     >
-      <span class="w-[5%]">No.</span>
-      <span class="w-[15%]">Name</span>
-      <span class="w-[25%]">Email</span>
-      <span class="w-[20%]">Assigned Tasks</span>
-      <span class="w-[20%]">Status</span>
-      <span class="w-[15%]"></span>
+      <span class="w-[5%] text-center">
+        {{ "common.position" | translate }}
+      </span>
+      <span class="w-[15%] text-center">{{ "users.name" | translate }}</span>
+      <span class="w-[25%] text-center">{{ "users.email" | translate }}</span>
+      <span class="w-[20%] text-center">
+        {{ "users.assignedTasks" | translate }}
+      </span>
+      <span class="w-[20%] text-center">{{ "common.status" | translate }}</span>
+      <span class="w-[15%] text-center"></span>
     </div>
     <div class="row-style" *ngFor="let user of usersToView; index as index">
-      <span class="w-[5%]">{{ firstRowPosition + index }}</span>
-      <span class="w-[15%]">{{ user.username }}</span>
-      <span class="w-[25%]">{{ user.email }}</span>
+      <span class="w-[5%] text-center">{{ firstRowPosition + index }}</span>
+      <span class="w-[15%] text-center">{{ user.username }}</span>
+      <span class="w-[25%] text-center">{{ user.email }}</span>
       <span class="w-[20%] text-center">{{ user.assignedTasks }}</span>
-      <span class="w-[20%]">{{ user.status }}</span>
-      <span class="w-[15%] flex gap-3">
+      <span class="w-[20%] text-center">{{ user.status }}</span>
+      <span class="w-[15%] flex justify-center gap-3">
         <span class="btn-delete" (click)="removeUserDialog(user._id)">
-          Delete
+          {{ "buttons.delete" | translate }}
         </span>
       </span>
     </div>
@@ -38,7 +42,7 @@
     class="text-center py-3 text-[#b1b0b2]"
     *ngIf="!isLoading && usersToView.length === 0"
   >
-    No data
+    {{ "common.noData" | translate }}
   </div>
   <!-- paginator of table -->
   <app-user-list-paginator></app-user-list-paginator>

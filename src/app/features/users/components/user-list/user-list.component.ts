@@ -18,6 +18,11 @@ import {
   updateUsers,
 } from 'src/app/core/store/actions/users.actions';
 import { selectIsLoadingUsers } from 'src/app/core/store/selectors/users.selectors';
+import { SharedModule } from 'src/app/shared/shared.module';
+import {
+  updateIsLoadingTasks,
+  updateTasks,
+} from 'src/app/core/store/actions/tasks.actions';
 
 @Component({
   selector: 'app-user-list',
@@ -75,17 +80,27 @@ export class UserListComponent implements OnInit {
   selector: 'remove-task-confirm',
   template: `
     <main class="p-5">
-      <div class="text-lg mb-5">Do you want to remove the task?</div>
+      <div class="text-lg mb-5">
+        {{ 'users.removeTaskMessage' | translate }}
+      </div>
       <div class="flex justify-start gap-5">
-        <button mat-stroked-button (click)="onNoClick()">Cancle</button>
-        <button mat-raised-button color="warn" (click)="removeUser()">
-          Delete
+        <button mat-stroked-button (click)="onNoClick()">
+          {{ 'buttons.cancle' | translate }}
+        </button>
+        <button mat-raised-button color="warn" (click)="removeUser()" disabled>
+          {{ 'buttons.delete' | translate }}
         </button>
       </div>
     </main>
   `,
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule],
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    SharedModule,
+  ],
 })
 export class RemoveTaskConfirm {
   constructor(
@@ -99,8 +114,32 @@ export class RemoveTaskConfirm {
     this.dialogRef.close();
   }
   removeUser() {
+    // ======================== Recall users and tasks after deleting user
+    this.store.dispatch(updateIsLoadingTasks({ payload: true }));
+    this.store.dispatch(updateIsLoadingUsers({ payload: true }));
     this.dataService.removeUser(this.data.userId).subscribe({
       next: (res: any) => {
+        this.dataService.getAllTasks().subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
+            this.store.dispatch(updateIsLoadingTasks({ payload: false }));
+          },
+          error: (error) => {
+            console.log(error);
+            this.store.dispatch(updateIsLoadingTasks({ payload: false }));
+          },
+        });
+        this.dataService.getAllUsers().subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
+            this.store.dispatch(updateIsLoadingUsers({ payload: false }));
+          },
+          error: (error) => {
+            console.log(error);
+            this.store.dispatch(updateIsLoadingUsers({ payload: false }));
+          },
+        });
+        // Recall users and tasks after deleting user ========================
         this._snackBar.openFromComponent(AlertComponent, {
           horizontalPosition: 'end',
           verticalPosition: 'top',
@@ -110,11 +149,6 @@ export class RemoveTaskConfirm {
             backgroundColor: '#16a34a',
             textColor: '#ffffff',
             isCloseBtnHidden: false,
-          },
-        });
-        this.dataService.getAllUsers().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
           },
         });
         this.dialogRef.close();

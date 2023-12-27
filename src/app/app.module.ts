@@ -17,6 +17,10 @@ import { paginationTasksReducer } from './core/store/reducers/paginationTasks.re
 import { usersReducer } from './core/store/reducers/users.reducers';
 import { paginationUsersReducer } from './core/store/reducers/paginationUsers.reducers';
 import { TasksModule } from './features/tasks/tasks.module';
+// import ngx-translate and the http loader
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -39,8 +43,22 @@ import { TasksModule } from './features/tasks/tasks.module';
       users: usersReducer,
       paginationUsers: paginationUsersReducer,
     }),
+    // ngx-translate and the loader module
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: httpInterceptorProviders,
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+// required for AOT compilation
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
+}

@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Spinner1Component } from './components/spinner1/spinner1.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [Spinner1Component, AlertComponent],
@@ -21,6 +22,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     HttpClientModule,
     MatSelectModule,
+    TranslateModule.forChild({
+      extend: true,
+    }),
   ],
   exports: [
     MaterialuiModule,
@@ -31,6 +35,7 @@ import { MatSelectModule } from '@angular/material/select';
     HttpClientModule,
     Spinner1Component,
     MatSelectModule,
+    TranslateModule,
   ],
 })
 export class SharedModule {}

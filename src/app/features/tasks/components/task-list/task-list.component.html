@@ -4,18 +4,18 @@
       class="text-xl font-medium bg-[#cb075a] text-white px-5 py-2 rounded-md hover:cursor-pointer"
       (click)="createTaskDialog()"
     >
-      Add Task
+      {{ "buttons.addTask" | translate }}
     </span>
   </div>
   <div class="flex justify-between items-center gap-3 flex-wrap mt-5">
     <!-- search -->
     <mat-form-field>
-      <mat-label>Search</mat-label>
+      <mat-label>{{ "common.search" | translate }}</mat-label>
       <input matInput [(ngModel)]="keyword" (keyup)="getAllTasks()" />
     </mat-form-field>
     <!-- by user -->
     <mat-form-field>
-      <mat-label>By user</mat-label>
+      <mat-label>{{ "users.user" | translate }}</mat-label>
       <mat-select [(value)]="userId" (valueChange)="getAllTasks()">
         <mat-option value="">All</mat-option>
         <mat-option [value]="user._id" *ngFor="let user of users$ | async">
@@ -25,7 +25,7 @@
     </mat-form-field>
     <!-- status -->
     <mat-form-field>
-      <mat-label>Status</mat-label>
+      <mat-label>{{ "common.status" | translate }}</mat-label>
       <mat-select [(value)]="status" (valueChange)="getAllTasks()">
         <mat-option value="">All</mat-option>
         <mat-option value="In-Progress">In-Progress</mat-option>
@@ -36,7 +36,7 @@
     <!-- date range -->
     <div>
       <mat-form-field>
-        <mat-label>Enter a date range</mat-label>
+        <mat-label>{{ "tasks.dateRange" | translate }}</mat-label>
         <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
           <input
             matStartDate
@@ -67,31 +67,33 @@
     <div
       class="flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white"
     >
-      <span class="w-[5%]">No.</span>
+      <span class="w-[5%]">{{ "common.position" | translate }}</span>
       <!-- <span class="w-[10%]">Image</span> -->
-      <span class="w-[25%]">Title</span>
-      <span class="w-[20%]">User</span>
-      <span class="w-[15%]">DeadLine</span>
-      <span class="w-[15%]">Status</span>
-      <span class="w-[25%]"></span>
+      <span class="w-[25%] text-center">{{ "tasks.title" | translate }}</span>
+      <span class="w-[20%] text-center">{{ "users.user" | translate }}</span>
+      <span class="w-[15%] text-center">
+        {{ "tasks.deadLine" | translate }}
+      </span>
+      <span class="w-[15%] text-center">{{ "common.status" | translate }}</span>
+      <span class="w-[25%] text-center"></span>
     </div>
     <div class="row-style" *ngFor="let task of tasksToView; index as index">
       <span class="w-[5%]">{{ firstRowPosition + index }}</span>
       <!-- <span class="w-[10%]">
           <img [src]="'https://crud-5swn.onrender.com/' + task.image" alt="img" />
         </span> -->
-      <span class="w-[25%]">{{ task.title }}</span>
-      <span class="w-[20%]">{{ task.userId.username }}</span>
-      <span class="w-[15%]">
+      <span class="w-[25%] text-center">{{ task.title }}</span>
+      <span class="w-[20%] text-center">{{ task.userId.username }}</span>
+      <span class="w-[15%] text-center">
         {{ task.deadline | date : "shortDate" }}
       </span>
-      <span class="w-[15%]">{{ task.status }}</span>
-      <span class="w-[25%] flex gap-3">
+      <span class="w-[15%] text-center">{{ task.status }}</span>
+      <span class="w-[25%] flex justify-center gap-3">
         <span class="btn-update" (click)="updateTaskDialog(task)">
-          Update
+          {{ "buttons.update" | translate }}
         </span>
         <span class="btn-delete" (click)="removeTaskDialog(task._id)">
-          Delete
+          {{ "buttons.delete" | translate }}
         </span>
       </span>
     </div>
@@ -105,7 +107,7 @@
     class="text-center py-3 text-[#b1b0b2]"
     *ngIf="!isLoading && tasksToView.length === 0"
   >
-    No data
+    {{ "common.noData" | translate }}
   </div>
   <!-- paginator of table -->
   <app-task-list-paginator></app-task-list-paginator>
