@@ -37,11 +37,7 @@ export class LoginComponent implements OnInit {
     private store: Store,
     private dataService: DataService
   ) {}
-  ngOnInit(): void {
-    if (this.tokenStorageService.getToken()) {
-      this.router.navigateByUrl('/tasks');
-    }
-  }
+  ngOnInit(): void {}
   onLogin() {
     this.errorMessage = '';
     this.isLoading = true;
