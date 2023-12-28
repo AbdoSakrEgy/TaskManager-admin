@@ -9,6 +9,7 @@ import { updateTasks } from '../../store/actions/tasks.actions';
 import { updateUsers } from '../../store/actions/users.actions';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
+  innerWidth: any = screen.width;
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.innerWidth = window.innerWidth;
+  }
   public registerForm = this.formBuilder.group(
     {
       userName: [

@@ -91,7 +91,7 @@
       <mat-label>{{ "taskForm.description" | translate }}</mat-label>
       <textarea
         matInput
-        style="height: 200px"
+        style="height: 150px"
         formControlName="description"
       ></textarea>
       <mat-error *ngIf="taskForm.get('description')?.hasError('required')">

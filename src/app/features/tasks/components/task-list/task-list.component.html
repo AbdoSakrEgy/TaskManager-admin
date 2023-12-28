@@ -1,7 +1,10 @@
 <main class="px-10">
   <div class="flex justify-end mt-5">
     <span
-      class="text-xl font-medium bg-[#cb075a] text-white px-5 py-2 rounded-md hover:cursor-pointer"
+      class="btn-addTask"
+      [class]="{
+        'btn-addTask-md-sm': innerWidth < 768,
+      }"
       (click)="createTaskDialog()"
     >
       {{ "buttons.addTask" | translate }}
@@ -9,12 +12,20 @@
   </div>
   <div class="flex justify-between items-center gap-3 flex-wrap mt-5">
     <!-- search -->
-    <mat-form-field>
+    <mat-form-field
+      [class]="{
+        'w-full': innerWidth < 768
+      }"
+    >
       <mat-label>{{ "common.search" | translate }}</mat-label>
       <input matInput [(ngModel)]="keyword" (keyup)="getAllTasks()" />
     </mat-form-field>
     <!-- by user -->
-    <mat-form-field>
+    <mat-form-field
+      [class]="{
+        'w-full': innerWidth < 768
+      }"
+    >
       <mat-label>{{ "users.user" | translate }}</mat-label>
       <mat-select [(value)]="userId" (valueChange)="getAllTasks()">
         <mat-option value="">All</mat-option>
@@ -24,7 +35,11 @@
       </mat-select>
     </mat-form-field>
     <!-- status -->
-    <mat-form-field>
+    <mat-form-field
+      [class]="{
+        'w-full': innerWidth < 768
+      }"
+    >
       <mat-label>{{ "common.status" | translate }}</mat-label>
       <mat-select [(value)]="status" (valueChange)="getAllTasks()">
         <mat-option value="">All</mat-option>
@@ -34,7 +49,12 @@
       </mat-select>
     </mat-form-field>
     <!-- date range -->
-    <div>
+    <div
+      [class]="{
+        'date-range-lg': innerWidth >= 768,
+        'date-range-md-sm': innerWidth < 768
+      }"
+    >
       <mat-form-field>
         <mat-label>{{ "tasks.dateRange" | translate }}</mat-label>
         <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
@@ -56,8 +76,8 @@
         ></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
-      <button mat-icon-button (click)="resetDate()" class="">
-        <mat-icon>autorenew</mat-icon>
+      <button mat-icon-button (click)="resetDate()">
+        <mat-icon class="text-[#707070]">autorenew</mat-icon>
       </button>
     </div>
   </div>
@@ -65,7 +85,11 @@
   <div class="table-container">
     <!-- if data retrived -->
     <div
-      class="flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white"
+      class="table-header"
+      [class]="{
+        'table-header-lg': innerWidth >= 768,
+        'table-header-md-sm': innerWidth < 768,
+      }"
     >
       <span class="w-[5%]">{{ "common.position" | translate }}</span>
       <!-- <span class="w-[10%]">Image</span> -->
@@ -77,7 +101,14 @@
       <span class="w-[15%] text-center">{{ "common.status" | translate }}</span>
       <span class="w-[25%] text-center"></span>
     </div>
-    <div class="row-style" *ngFor="let task of tasksToView; index as index">
+    <div
+      class="table-rows"
+      [class]="{
+      'table-rows-lg':innerWidth>=768,
+      'table-rows-md-sm':innerWidth<768,
+    }"
+      *ngFor="let task of tasksToView; index as index"
+    >
       <span class="w-[5%]">{{ firstRowPosition + index }}</span>
       <!-- <span class="w-[10%]">
           <img [src]="'https://crud-5swn.onrender.com/' + task.image" alt="img" />

@@ -6,8 +6,23 @@
   .table-container {
     @apply overflow-auto shadow-lg;
   }
-  .row-style {
+  .table-header {
+    @apply flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white;
+  }
+  .table-header-lg {
+    @apply w-full;
+  }
+  .table-header-md-sm {
+    @apply w-[940px];
+  }
+  .table-rows {
     @apply flex justify-between items-center gap-3 px-5 py-2 border-b;
+  }
+  .table-rows-lg {
+    @apply w-full;
+  }
+  .table-rows-md-sm {
+    @apply w-[940px];
   }
   .btn-update {
     @apply px-3 py-2 rounded-md hover:cursor-pointer bg-[#f7d034] text-white;

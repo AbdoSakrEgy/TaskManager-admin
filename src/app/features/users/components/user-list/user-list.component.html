@@ -1,5 +1,9 @@
 <main class="px-10 mt-5">
-  <mat-form-field>
+  <mat-form-field
+    [class]="{
+      'w-full': innerWidth < 768
+    }"
+  >
     <mat-label>{{ "common.search" | translate }}</mat-label>
     <input matInput [(ngModel)]="name" (keyup)="getAllUsers()" />
   </mat-form-field>
@@ -7,7 +11,11 @@
   <div class="table-container">
     <!-- if data retrived -->
     <div
-      class="flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white"
+      class="table-header"
+      [class]="{
+      'table-header-lg': innerWidth >= 768,
+      'table-header-md-sm': innerWidth < 768,
+    }"
     >
       <span class="w-[5%] text-center">
         {{ "common.position" | translate }}
@@ -20,7 +28,14 @@
       <span class="w-[20%] text-center">{{ "common.status" | translate }}</span>
       <span class="w-[15%] text-center"></span>
     </div>
-    <div class="row-style" *ngFor="let user of usersToView; index as index">
+    <div
+      class="table-rows"
+      [class]="{
+    'table-rows-lg':innerWidth>=768,
+    'table-rows-md-sm':innerWidth<768,
+  }"
+      *ngFor="let user of usersToView; index as index"
+    >
       <span class="w-[5%] text-center">{{ firstRowPosition + index }}</span>
       <span class="w-[15%] text-center">{{ user.username }}</span>
       <span class="w-[25%] text-center">{{ user.email }}</span>

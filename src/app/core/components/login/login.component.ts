@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { updateTasks } from '../../store/actions/tasks.actions';
 import { DataService } from '../../services/data.service';
 import { updateUsers } from '../../store/actions/users.actions';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,11 @@ import { updateUsers } from '../../store/actions/users.actions';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  innerWidth: any = screen.width;
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.innerWidth = window.innerWidth;
+  }
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: [

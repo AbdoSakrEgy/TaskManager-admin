@@ -51,9 +51,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
-      // this code added to try fix i18n not working on production
-      // defaultLanguage: 'en',
-      defaultLanguage: 'en',
     }),
   ],
   providers: httpInterceptorProviders,

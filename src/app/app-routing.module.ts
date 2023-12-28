@@ -16,9 +16,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  // this code added to try fix i18n not working on production
-  // { useHash: true }
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

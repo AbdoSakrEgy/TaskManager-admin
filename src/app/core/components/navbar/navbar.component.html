@@ -3,7 +3,7 @@
     Tasks
   </div>
   <div class="flex justify-between items-center w-full">
-    <span class="flex">
+    <span class="flex justify-between gap-2">
       <a
         routerLink="/tasks"
         routerLinkActive="active"
@@ -19,7 +19,7 @@
         {{ "users.users" | translate }}
       </a>
     </span>
-    <span class="flex justify-between gap-5 text-white">
+    <span class="flex justify-end gap-2 text-white">
       <button
         (click)="useLanguage()"
         class="w-10 p-2 rounded-md hover:cursor-pointer hover:bg-[#9303445d]"

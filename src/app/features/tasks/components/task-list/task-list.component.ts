@@ -20,8 +20,8 @@ import {
 import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTasks.selectors';
 import { selectIsLoadingTasks } from 'src/app/core/store/selectors/tasks.selectors';
 import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
-import { TranslateService } from '@ngx-translate/core';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-task-list',
@@ -29,6 +29,11 @@ import { SharedModule } from 'src/app/shared/shared.module';
   styleUrls: ['./task-list.component.css'],
 })
 export class TaskListComponent implements OnInit {
+  innerWidth: any = screen.width;
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.innerWidth = window.innerWidth;
+  }
   tasksToView: any[] = [];
   firstRowPosition: number = 1;
   isLoading = true;

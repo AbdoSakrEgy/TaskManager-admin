@@ -1,12 +1,17 @@
 <main class="flex justify-between items-center">
-  <div class="w-1/2 h-screen bg-black">
+  <div
+    [class]="{
+      'img-container-lg': innerWidth >= 768,
+      'img-container-md-sm': innerWidth < 768
+    }"
+  >
     <img
       src="assets/images/img.jpg"
       alt="img"
       class="h-screen object-cover opacity-25"
     />
   </div>
-  <div class="w-1/2 h-screen flex justify-center items-center">
+  <div class="w-full h-screen flex justify-center items-center">
     <form
       [formGroup]="registerForm"
       (ngSubmit)="onRegister()"

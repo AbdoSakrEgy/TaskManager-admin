@@ -4,10 +4,37 @@
 
 @layer components {
   .table-container {
-    @apply overflow-auto shadow-lg;
+    @apply overflow-auto w-full shadow-lg;
   }
-  .row-style {
+  .table-header {
+    @apply flex justify-between items-center gap-2 p-5 bg-[#cb075a] text-white;
+  }
+  .table-header-lg {
+    @apply w-full;
+  }
+  .table-header-md-sm {
+    @apply w-[940px];
+  }
+  .table-rows {
     @apply flex justify-between items-center gap-3 px-5 py-2 border-b;
+  }
+  .table-rows-lg {
+    @apply w-full;
+  }
+  .table-rows-md-sm {
+    @apply w-[940px];
+  }
+  .date-range-lg {
+    @apply flex justify-between items-start;
+  }
+  .date-range-md-sm {
+    @apply flex justify-between items-center w-full;
+  }
+  .btn-addTask {
+    @apply text-xl font-medium bg-[#cb075a] text-white px-5 py-2 rounded-md hover:cursor-pointer;
+  }
+  .btn-addTask-md-sm {
+    @apply w-full text-center;
   }
   .btn-update {
     @apply px-3 py-2 rounded-md hover:cursor-pointer bg-[#f7d034] text-white;

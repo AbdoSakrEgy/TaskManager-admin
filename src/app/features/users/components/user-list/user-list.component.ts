@@ -23,6 +23,7 @@ import {
   updateIsLoadingTasks,
   updateTasks,
 } from 'src/app/core/store/actions/tasks.actions';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-user-list',
@@ -30,6 +31,11 @@ import {
   styleUrls: ['./user-list.component.css'],
 })
 export class UserListComponent implements OnInit {
+  innerWidth: any = screen.width;
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.innerWidth = window.innerWidth;
+  }
   usersToView: any[] = [];
   firstRowPosition: number = 1;
   isLoading = true;

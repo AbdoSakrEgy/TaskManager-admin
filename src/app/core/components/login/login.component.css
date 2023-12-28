@@ -12,4 +12,10 @@
   .btnLoading {
     @apply w-52 py-1 text-center rounded-md bg-[#e0e0e0] text-[#b1b0b2];
   }
+  .img-container-lg {
+    @apply w-full h-screen bg-black;
+  }
+  .img-container-md-sm {
+    @apply hidden;
+  }
 }
