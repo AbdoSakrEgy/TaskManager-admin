@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   isLoading = false;
-  isAdmin = false;
+  // isAdmin = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,7 +50,8 @@ export class LoginComponent implements OnInit {
     const MODEL = {
       email: this.loginForm.get('email')?.value!,
       password: this.loginForm.get('password')?.value!,
-      role: this.isAdmin ? 'admin' : 'user',
+      // role: this.isAdmin ? 'admin' : 'user',
+      role: 'admin',
     };
     this.authService.login(MODEL).subscribe({
       next: (res: any) => {
