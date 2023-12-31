@@ -30,4 +30,10 @@
   .btn-delete {
     @apply px-3 py-2 rounded-md hover:cursor-pointer bg-[#bd3630] text-white;
   }
+  .btn-active {
+    @apply px-3 py-2 rounded-md hover:cursor-pointer bg-[#30bd30] text-white;
+  }
+  .btn-inactive {
+    @apply px-3 py-2 rounded-md hover:cursor-pointer bg-[#3e30bd] text-white;
+  }
 }

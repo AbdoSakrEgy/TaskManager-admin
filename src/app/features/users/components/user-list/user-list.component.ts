@@ -79,6 +79,27 @@ export class UserListComponent implements OnInit {
       },
     });
   }
+  setUserState(id: any, status: any) {
+    const body = {
+      id: id,
+      status: status,
+    };
+    this.dataService.setUserState(body).subscribe({
+      next: (res: any) => {
+        this.store.dispatch(updateIsLoadingUsers({ payload: true }));
+        this.dataService.getAllUsers().subscribe({
+          next: (res: any) => {
+            this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
+            this.store.dispatch(updateIsLoadingUsers({ payload: false }));
+          },
+          error: (error) => {
+            console.log(error);
+            this.store.dispatch(updateIsLoadingUsers({ payload: false }));
+          },
+        });
+      },
+    });
+  }
 }
 
 // ======================== standalone component ========================

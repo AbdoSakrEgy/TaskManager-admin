@@ -32,6 +32,8 @@
     "addTask": "Add Task",
     "update": "Update",
     "delete": "Delete",
+    "active":"Active",
+    "inActive":"In-Active",
     "create": "Create",
     "close": "Close",
     "cancle": "Cancle",

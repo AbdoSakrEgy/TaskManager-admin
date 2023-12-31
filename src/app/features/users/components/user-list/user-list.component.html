@@ -22,11 +22,11 @@
       </span>
       <span class="w-[15%] text-center">{{ "users.name" | translate }}</span>
       <span class="w-[25%] text-center">{{ "users.email" | translate }}</span>
-      <span class="w-[20%] text-center">
+      <span class="w-[15%] text-center">
         {{ "users.assignedTasks" | translate }}
       </span>
       <span class="w-[20%] text-center">{{ "common.status" | translate }}</span>
-      <span class="w-[15%] text-center"></span>
+      <span class="w-[20%] text-center"></span>
     </div>
     <div
       class="table-rows"
@@ -39,11 +39,25 @@
       <span class="w-[5%] text-center">{{ firstRowPosition + index }}</span>
       <span class="w-[15%] text-center">{{ user.username }}</span>
       <span class="w-[25%] text-center">{{ user.email }}</span>
-      <span class="w-[20%] text-center">{{ user.assignedTasks }}</span>
+      <span class="w-[15%] text-center">{{ user.assignedTasks }}</span>
       <span class="w-[20%] text-center">{{ user.status }}</span>
-      <span class="w-[15%] flex justify-center gap-3">
+      <span class="w-[20%] flex justify-center gap-3">
         <span class="btn-delete" (click)="removeUserDialog(user._id)">
           {{ "buttons.delete" | translate }}
+        </span>
+        <span
+          class="btn-inactive"
+          (click)="setUserState(user._id, user.status)"
+          *ngIf="user.status === 'Active'"
+        >
+          {{ "buttons.inActive" | translate }}
+        </span>
+        <span
+          class="btn-active"
+          (click)="setUserState(user._id, user.status)"
+          *ngIf="user.status != 'Active'"
+        >
+          {{ "buttons.active" | translate }}
         </span>
       </span>
     </div>

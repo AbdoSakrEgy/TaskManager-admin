@@ -44,6 +44,9 @@ export class DataService {
     };
     return this.http.get(API_URL + '/auth/users', httpOptions);
   }
+  setUserState(body: any) {
+    return this.http.put(API_URL + '/auth/user-status', body);
+  }
   removeUser(userId: any) {
     return this.http.delete(API_URL + '/auth/user/' + userId);
   }

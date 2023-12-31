@@ -32,6 +32,8 @@
     "addTask": "إضافة مهمة",
     "update": "تحديث",
     "delete": "حذف",
+    "active": "تنشيط",
+    "inActive": "إلغاء النشاط",
     "create": "إنشاء",
     "close": "إغلاق",
     "cancle": "إلغاء",
