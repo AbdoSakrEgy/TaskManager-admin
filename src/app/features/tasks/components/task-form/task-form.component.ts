@@ -98,14 +98,7 @@ export class TaskFormComponent {
           },
         });
         this.dialogRef.close();
-        this.dataService.getAllTasks().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        });
+        this.dataService._getAllTasks();
       },
       error: (error) => {
         console.log(error);
@@ -149,14 +142,7 @@ export class TaskFormComponent {
           },
         });
         this.dialogRef.close();
-        this.dataService.getAllTasks().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        });
+        this.dataService._getAllTasks();
       },
       error: (error: any) => {
         console.log(error);

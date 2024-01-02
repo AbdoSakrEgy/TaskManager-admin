@@ -3,10 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { TokenStorageService } from '../../services/token-storage.service';
-import { DataService } from '../../services/data.service';
-import { Store } from '@ngrx/store';
-import { updateTasks } from '../../store/actions/tasks.actions';
-import { updateUsers } from '../../store/actions/users.actions';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HostListener } from '@angular/core';
@@ -56,8 +52,6 @@ export class RegisterComponent {
     private authService: AuthService,
     private tokenStorage: TokenStorageService,
     private _snackBar: MatSnackBar,
-    private store: Store,
-    private dataService: DataService
   ) {}
   onRegister() {
     this.isLoading = true;
@@ -74,16 +68,6 @@ export class RegisterComponent {
         this.tokenStorage.saveToken(res.token);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
-        this.dataService.getAllTasks().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
-          },
-        });
-        this.dataService.getAllUsers().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
-          },
-        });
         this._snackBar.openFromComponent(AlertComponent, {
           data: {
             message: 'Logged in successfully',

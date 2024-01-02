@@ -5,10 +5,6 @@ import { AuthService } from '../../services/auth.service';
 import { TokenStorageService } from '../../services/token-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
-import { Store } from '@ngrx/store';
-import { updateTasks } from '../../store/actions/tasks.actions';
-import { DataService } from '../../services/data.service';
-import { updateUsers } from '../../store/actions/users.actions';
 import { HostListener } from '@angular/core';
 
 @Component({
@@ -40,8 +36,6 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private tokenStorageService: TokenStorageService,
     private _snackBar: MatSnackBar,
-    private store: Store,
-    private dataService: DataService
   ) {}
   ngOnInit(): void {}
   onLogin() {
@@ -57,16 +51,6 @@ export class LoginComponent implements OnInit {
       next: (res: any) => {
         this.router.navigateByUrl('/tasks');
         this.tokenStorageService.saveToken(res.token);
-        this.dataService.getAllTasks().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
-          },
-        });
-        this.dataService.getAllUsers().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
-          },
-        });
         this._snackBar.openFromComponent(AlertComponent, {
           data: {
             message: 'Logged in successfully',

@@ -13,10 +13,6 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
-import {
-  updateIsLoadingTasks,
-  updateTasks,
-} from 'src/app/core/store/actions/tasks.actions';
 import { selectPaginationTasks } from 'src/app/core/store/selectors/paginationTasks.selectors';
 import { selectIsLoadingTasks } from 'src/app/core/store/selectors/tasks.selectors';
 import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
@@ -69,7 +65,15 @@ export class TaskListComponent implements OnInit {
     private dataService: DataService
   ) {}
   ngOnInit(): void {
-    this.getAllTasks();
+    this.getAllTasks(
+      this.page,
+      this.limit,
+      this.status,
+      this.fromDate,
+      this.toDate,
+      this.userId,
+      this.keyword
+    );
   }
   createTaskDialog(): void {
     const dialogRef = this.dialog.open(TaskFormComponent, {
@@ -118,31 +122,27 @@ export class TaskListComponent implements OnInit {
     this.range.get('end')?.markAsPristine();
     this.getAllTasks();
   }
-  getAllTasks() {
+  getAllTasks(
+    page = this.page,
+    limit = this.limit,
+    status = this.status,
+    fromDate = this.fromDate,
+    toDate = this.toDate,
+    userId = this.userId,
+    keyword = this.keyword
+  ) {
     if (this.range.dirty) {
       this.setDate();
     }
-    this.store.dispatch(updateIsLoadingTasks({ payload: true }));
-    this.dataService
-      .getAllTasks(
-        this.page,
-        this.limit,
-        this.status,
-        this.fromDate,
-        this.toDate,
-        this.userId,
-        this.keyword
-      )
-      .subscribe({
-        next: (res: any) => {
-          this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
-          this.store.dispatch(updateIsLoadingTasks({ payload: false }));
-        },
-        error: (error) => {
-          console.log(error);
-          this.store.dispatch(updateIsLoadingTasks({ payload: false }));
-        },
-      });
+    this.dataService._getAllTasks(
+      page,
+      limit,
+      status,
+      fromDate,
+      toDate,
+      userId,
+      keyword
+    );
   }
 }
 
@@ -198,14 +198,7 @@ export class RemoveTaskConfirm {
             isCloseBtnHidden: false,
           },
         });
-        this.dataService.getAllTasks().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        });
+        this.dataService._getAllTasks();
         this.dialogRef.close();
       },
       error: (error) => {

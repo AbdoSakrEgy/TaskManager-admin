@@ -13,16 +13,8 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
-import {
-  updateIsLoadingUsers,
-  updateUsers,
-} from 'src/app/core/store/actions/users.actions';
 import { selectIsLoadingUsers } from 'src/app/core/store/selectors/users.selectors';
 import { SharedModule } from 'src/app/shared/shared.module';
-import {
-  updateIsLoadingTasks,
-  updateTasks,
-} from 'src/app/core/store/actions/tasks.actions';
 import { HostListener } from '@angular/core';
 
 @Component({
@@ -67,17 +59,7 @@ export class UserListComponent implements OnInit {
     });
   }
   getAllUsers() {
-    this.store.dispatch(updateIsLoadingUsers({ payload: true }));
-    this.dataService.getAllUsers(this.name).subscribe({
-      next: (res: any) => {
-        this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
-        this.store.dispatch(updateIsLoadingUsers({ payload: false }));
-      },
-      error: (error) => {
-        console.log(error);
-        this.store.dispatch(updateIsLoadingUsers({ payload: false }));
-      },
-    });
+    this.dataService._getAllUsers(this.name);
   }
   setUserState(id: any, status: any) {
     const body = {
@@ -86,17 +68,7 @@ export class UserListComponent implements OnInit {
     };
     this.dataService.setUserState(body).subscribe({
       next: (res: any) => {
-        this.store.dispatch(updateIsLoadingUsers({ payload: true }));
-        this.dataService.getAllUsers().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
-            this.store.dispatch(updateIsLoadingUsers({ payload: false }));
-          },
-          error: (error) => {
-            console.log(error);
-            this.store.dispatch(updateIsLoadingUsers({ payload: false }));
-          },
-        });
+        this.getAllUsers();
       },
     });
   }
@@ -141,31 +113,11 @@ export class RemoveTaskConfirm {
     this.dialogRef.close();
   }
   removeUser() {
-    // ======================== Recall users and tasks after deleting user
-    this.store.dispatch(updateIsLoadingTasks({ payload: true }));
-    this.store.dispatch(updateIsLoadingUsers({ payload: true }));
     this.dataService.removeUser(this.data.userId).subscribe({
       next: (res: any) => {
-        this.dataService.getAllTasks().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
-            this.store.dispatch(updateIsLoadingTasks({ payload: false }));
-          },
-          error: (error) => {
-            console.log(error);
-            this.store.dispatch(updateIsLoadingTasks({ payload: false }));
-          },
-        });
-        this.dataService.getAllUsers().subscribe({
-          next: (res: any) => {
-            this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
-            this.store.dispatch(updateIsLoadingUsers({ payload: false }));
-          },
-          error: (error) => {
-            console.log(error);
-            this.store.dispatch(updateIsLoadingUsers({ payload: false }));
-          },
-        });
+        // ======================== Recall users and tasks after deleting user
+        this.dataService._getAllTasks();
+        this.dataService._getAllUsers();
         // Recall users and tasks after deleting user ========================
         this._snackBar.openFromComponent(AlertComponent, {
           horizontalPosition: 'end',

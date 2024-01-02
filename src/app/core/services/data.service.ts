@@ -1,5 +1,14 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import {
+  updateIsLoadingTasks,
+  updateTasks,
+} from '../store/actions/tasks.actions';
+import {
+  updateIsLoadingUsers,
+  updateUsers,
+} from '../store/actions/users.actions';
 
 const API_URL = 'https://crud-5swn.onrender.com';
 
@@ -7,7 +16,8 @@ const API_URL = 'https://crud-5swn.onrender.com';
   providedIn: 'root',
 })
 export class DataService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store: Store) {}
+  // ========================= Services =========================
   getAllTasks(
     page = '',
     limit = '',
@@ -49,5 +59,48 @@ export class DataService {
   }
   removeUser(userId: any) {
     return this.http.delete(API_URL + '/auth/user/' + userId);
+  }
+  // ========================= Functions =========================
+  _getAllTasks(
+    page = '',
+    limit = '',
+    status = '',
+    fromDate = '',
+    toDate = '',
+    userId = '',
+    keyword = ''
+  ) {
+    this.store.dispatch(updateIsLoadingTasks({ payload: true }));
+    this.getAllTasks(
+      page,
+      limit,
+      status,
+      fromDate,
+      toDate,
+      userId,
+      keyword
+    ).subscribe({
+      next: (res: any) => {
+        this.store.dispatch(updateTasks({ payload: res.tasks.reverse() }));
+        this.store.dispatch(updateIsLoadingTasks({ payload: false }));
+      },
+      error: (error) => {
+        console.log(error);
+        this.store.dispatch(updateIsLoadingTasks({ payload: false }));
+      },
+    });
+  }
+  _getAllUsers(name = '') {
+    this.store.dispatch(updateIsLoadingUsers({ payload: true }));
+    this.getAllUsers(name).subscribe({
+      next: (res: any) => {
+        this.store.dispatch(updateUsers({ payload: res.users.reverse() }));
+        this.store.dispatch(updateIsLoadingUsers({ payload: false }));
+      },
+      error: (error) => {
+        console.log(error);
+        this.store.dispatch(updateIsLoadingUsers({ payload: false }));
+      },
+    });
   }
 }
