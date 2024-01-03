@@ -1,12 +1,12 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { TokenStorageService } from '../services/token-storage.service';
 import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 export const loggedinGuard: CanActivateFn = (route, state) => {
-  const tokenStorageService = inject(TokenStorageService);
+  const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (!tokenStorageService.getToken()) {
+  if (!authService.isTokenValid()) {
     return true;
   } else {
     router.navigateByUrl('/tasks');

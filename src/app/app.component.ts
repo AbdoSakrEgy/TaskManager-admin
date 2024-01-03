@@ -11,8 +11,6 @@ import {
   updateTasks,
 } from './core/store/actions/tasks.actions';
 import { TranslateService } from '@ngx-translate/core';
-import { TokenStorageService } from './core/services/token-storage.service';
-import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-root',
@@ -27,34 +25,15 @@ export class AppComponent {
     private router: Router,
     private dataService: DataService,
     private store: Store,
-    private translate: TranslateService,
-    private tokenStorageService: TokenStorageService
+    private translate: TranslateService
   ) {
     this.translate.setDefaultLang('en');
     this.translate.use('en');
   }
   ngOnInit(): void {
-    // Check if the user is logged in (you might have your own authentication logic)
-    const token = this.tokenStorageService.getToken();
-    if (token) {
-      // Decode the JWT token
-      const decodedToken: any = jwtDecode(token);
-      // Check if the token is still valid or expired
-      if (decodedToken && decodedToken.exp * 1000 > Date.now()) {
-        // Token is still valid, do nothing or perform any other necessary checks
-        this.getAllTasks();
-        this.getAllUsers();
-      } else {
-        // Token is expired or invalid, log out the user
-        this.router.navigateByUrl('/login');
-        this.tokenStorageService.signOut();
-      }
-    }
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         if (event.url === '/login') {
-          this.isNavbarHidden = true;
-        } else if (event.url === '/register') {
           this.isNavbarHidden = true;
         } else if (event.url === '/') {
           this.isNavbarHidden = true;
