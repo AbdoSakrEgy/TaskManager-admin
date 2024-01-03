@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './core/components/login/login.component';
-import { RegisterComponent } from './core/components/register/register.component';
 import { NavbarComponent } from './core/components/navbar/navbar.component';
 import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
 import { SharedModule } from './shared/shared.module';
@@ -26,7 +25,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent,
     NavbarComponent,
     PageNotFoundComponent,
   ],

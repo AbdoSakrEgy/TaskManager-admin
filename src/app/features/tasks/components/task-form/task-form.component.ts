@@ -5,7 +5,6 @@ import { DataService } from 'src/app/core/services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { Store } from '@ngrx/store';
-import { updateTasks } from 'src/app/core/store/actions/tasks.actions';
 import { selectUsers } from 'src/app/core/store/selectors/users.selectors';
 
 @Component({

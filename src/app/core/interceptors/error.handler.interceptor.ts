@@ -32,7 +32,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
           verticalPosition: 'top',
           duration: 3 * 1000,
           data: {
-            message: error.message,
+            message: error.error.message,
             backgroundColor: '#df1e1e',
             textColor: '#ffffff',
             isCloseBtnHidden: false,
