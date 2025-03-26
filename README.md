@@ -1,4 +1,4 @@
-# TasksApp-admin
+# TaskManager-admin
 Angular CRUD app for admin side.
 
 ## Demo
