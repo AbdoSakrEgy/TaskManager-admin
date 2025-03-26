@@ -8,7 +8,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { loggedinGuard } from './core/guards/loggedin.guard';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent, canActivate: [loggedinGuard] },
+  { path: 'login', component: LoginComponent },
   { path: 'tasks', component: TaskListComponent, canActivate: [authGuard] },
   { path: 'users', component: UserListComponent, canActivate: [authGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

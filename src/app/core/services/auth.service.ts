@@ -29,15 +29,12 @@ export class AuthService {
       // Check if the token is still valid or expired
       if (decodedToken && decodedToken.exp * 1000 > Date.now()) {
         // Token is still valid, do nothing or perform any other necessary checks
-        console.log('trrrrrrrrrrrr');
         return true;
       } else {
         // Token is expired or invalid, log out the user
-        console.log('fllllllllllllll');
         return false;
       }
     } else {
-      console.log('fllllllllllllll');
       return false;
     }
   }
