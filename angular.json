@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "TasksApp-admin": {
+    "TaskManager-admin": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -56,10 +56,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "TasksApp-admin:build:production"
+              "buildTarget": "TaskManager-admin:build:production"
             },
             "development": {
-              "buildTarget": "TasksApp-admin:build:development"
+              "buildTarget": "TaskManager-admin:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -67,7 +67,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "TasksApp-admin:build"
+            "buildTarget": "TaskManager-admin:build"
           }
         },
         "test": {
