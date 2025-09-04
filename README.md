@@ -2,7 +2,7 @@
 Angular CRUD app for admin side.
 
 ## Demo
-Check out the live demo of the "TasksApp-admin" project: [Live Demo](https://taskmanager-admin.netlify.app/)
+Check out the live demo of the "TasksApp-admin" project: [Live Demo](https://task-manager-admin-two.vercel.app/tasks)
 
 ## Features
 - Create, Read, Update, and Delete tasks
